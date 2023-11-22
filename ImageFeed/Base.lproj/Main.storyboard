@@ -19,16 +19,71 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="TXM-VO-hej">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                <color key="sectionIndexBackgroundColor" name="YP White"/>
+                                <color key="backgroundColor" name="YP Background"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationWidth="10" reuseIdentifier="ImagesListCell" rowHeight="204" id="XdX-IN-PNS" customClass="ImagesListCell" customModule="ImageFeed" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="44.5" width="414" height="204"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="XdX-IN-PNS" id="TCI-3m-TtA">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="204"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="hlT-ML-hai" userLabel="Cell Image">
+                                                    <rect key="frame" x="16" y="4" width="382" height="196"/>
+                                                    <color key="backgroundColor" name="YP Background"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <integer key="value" value="16"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskToBounds" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="11 ноября 2023" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jl0-om-emG" userLabel="Date Label">
+                                                    <rect key="frame" x="24" y="176" width="96" height="16"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <color key="textColor" name="YP White"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZTs-MS-rTJ" userLabel="Like Button">
+                                                    <rect key="frame" x="354" y="4" width="44" height="44"/>
+                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                    <state key="normal" image="FavoritesActive"/>
+                                                </button>
+                                            </subviews>
+                                            <color key="backgroundColor" name="YP Background"/>
+                                            <constraints>
+                                                <constraint firstItem="jl0-om-emG" firstAttribute="leading" secondItem="hlT-ML-hai" secondAttribute="leading" constant="8" id="Ebj-h7-lsg"/>
+                                                <constraint firstItem="hlT-ML-hai" firstAttribute="trailing" secondItem="ZTs-MS-rTJ" secondAttribute="trailing" id="VBR-PQ-Uuh"/>
+                                                <constraint firstAttribute="trailing" secondItem="hlT-ML-hai" secondAttribute="trailing" constant="16" id="ZkQ-9D-MHh"/>
+                                                <constraint firstAttribute="bottom" secondItem="hlT-ML-hai" secondAttribute="bottom" constant="4" id="gqo-J0-4w1"/>
+                                                <constraint firstItem="ZTs-MS-rTJ" firstAttribute="top" secondItem="hlT-ML-hai" secondAttribute="top" id="hFk-Zb-t3H"/>
+                                                <constraint firstItem="hlT-ML-hai" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="jl0-om-emG" secondAttribute="trailing" constant="8" id="j7V-ae-vxl"/>
+                                                <constraint firstItem="hlT-ML-hai" firstAttribute="bottom" secondItem="jl0-om-emG" secondAttribute="bottom" constant="8" id="lsN-EQ-0bB"/>
+                                                <constraint firstItem="hlT-ML-hai" firstAttribute="leading" secondItem="TCI-3m-TtA" secondAttribute="leading" constant="16" id="t8F-yJ-8f0"/>
+                                                <constraint firstItem="hlT-ML-hai" firstAttribute="top" secondItem="TCI-3m-TtA" secondAttribute="top" constant="4" id="ua1-zJ-ALb"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" name="YP Background"/>
+                                        <connections>
+                                            <outlet property="cellImage" destination="hlT-ML-hai" id="3Tf-3K-Hl1"/>
+                                            <outlet property="dateLabel" destination="jl0-om-emG" id="ppy-Dn-dc3"/>
+                                            <outlet property="likeButton" destination="ZTs-MS-rTJ" id="jJv-gM-wJf"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="P9c-0k-eK0"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="zXm-Dk-OL3"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="TXM-VO-hej" secondAttribute="bottom" id="0KF-ws-UxF"/>
-                            <constraint firstAttribute="trailing" secondItem="TXM-VO-hej" secondAttribute="trailing" id="Jqr-iB-ddm"/>
-                            <constraint firstItem="TXM-VO-hej" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="pdd-hD-m4M"/>
-                            <constraint firstItem="TXM-VO-hej" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="sYS-y6-1Vu"/>
+                            <constraint firstItem="TXM-VO-hej" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="Sm9-Un-HB6"/>
+                            <constraint firstAttribute="trailing" secondItem="TXM-VO-hej" secondAttribute="trailing" id="j76-cX-YSF"/>
+                            <constraint firstItem="TXM-VO-hej" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="lxb-Dw-JHk"/>
+                            <constraint firstAttribute="bottom" secondItem="TXM-VO-hej" secondAttribute="bottom" id="wOG-Z0-aWU"/>
                         </constraints>
                     </view>
                     <connections>
@@ -37,10 +92,15 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7" y="80"/>
+            <point key="canvasLocation" x="5.7971014492753632" y="79.6875"/>
         </scene>
     </scenes>
     <resources>
+        <image name="0" width="200" height="132"/>
+        <image name="FavoritesActive" width="44" height="44"/>
+        <namedColor name="YP Background">
+            <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="YP Black">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

@@ -1,8 +1,3 @@
-//
-//  UIColor+Extensions.swift
-//  ImageFeed
-//
-
 import UIKit
 
 extension UIColor {
