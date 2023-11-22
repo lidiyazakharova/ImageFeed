@@ -47,7 +47,7 @@
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZTs-MS-rTJ" userLabel="Like Button">
                                                     <rect key="frame" x="354" y="4" width="44" height="44"/>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                    <state key="normal" image="FavoritesActive"/>
+                                                    <state key="normal" image="favoritesActive"/>
                                                 </button>
                                             </subviews>
                                             <color key="backgroundColor" name="YP Background"/>
@@ -97,7 +97,7 @@
     </scenes>
     <resources>
         <image name="0" width="200" height="132"/>
-        <image name="FavoritesActive" width="44" height="44"/>
+        <image name="favoritesActive" width="44" height="44"/>
         <namedColor name="YP Background">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
