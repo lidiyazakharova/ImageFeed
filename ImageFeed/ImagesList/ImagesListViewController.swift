@@ -71,7 +71,7 @@ extension ImagesListViewController {
         cell.gradient.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
         
         let isLiked = indexPath.row % 2 == 0
-        let likeImage = isLiked ? UIImage(named: "favoritesActive") : UIImage(named: "favoritesNoActive")
+        let likeImage = isLiked ? UIImage(named: "likeActive") : UIImage(named: "likeNoActive")
         cell.likeButton.setImage(likeImage, for: .normal)
     }
 }
