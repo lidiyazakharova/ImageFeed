@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		59AA187A2B1540A30085E35E /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59AA18792B1540A30085E35E /* GradientView.swift */; };
 		59CF2F592B0024CE00C639FD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59CF2F582B0024CE00C639FD /* AppDelegate.swift */; };
 		59CF2F5B2B0024CE00C639FD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59CF2F5A2B0024CE00C639FD /* SceneDelegate.swift */; };
 		59CF2F5D2B0024CE00C639FD /* ImagesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59CF2F5C2B0024CE00C639FD /* ImagesListViewController.swift */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		59AA18792B1540A30085E35E /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		59CF2F552B0024CE00C639FD /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		59CF2F582B0024CE00C639FD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		59CF2F5A2B0024CE00C639FD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -76,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				59CF2F6D2B07EF6B00C639FD /* UIColor+Extensions.swift */,
+				59AA18792B1540A30085E35E /* GradientView.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -163,6 +166,7 @@
 				59CF2F5D2B0024CE00C639FD /* ImagesListViewController.swift in Sources */,
 				59CF2F592B0024CE00C639FD /* AppDelegate.swift in Sources */,
 				59CF2F902B0E7B1E00C639FD /* ImagesListCell.swift in Sources */,
+				59AA187A2B1540A30085E35E /* GradientView.swift in Sources */,
 				59CF2F5B2B0024CE00C639FD /* SceneDelegate.swift in Sources */,
 				59CF2F6E2B07EF6B00C639FD /* UIColor+Extensions.swift in Sources */,
 			);

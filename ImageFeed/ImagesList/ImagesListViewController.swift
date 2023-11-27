@@ -1,8 +1,8 @@
 import UIKit
 
-class ImagesListViewController: UIViewController {
+final class ImagesListViewController: UIViewController {
     @IBOutlet private var tableView: UITableView!
-
+    
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
@@ -17,8 +17,10 @@ class ImagesListViewController: UIViewController {
     }
     
     override func viewDidLoad() {
-        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         super.viewDidLoad()
+        
+        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        
     }
 }
 
@@ -65,6 +67,8 @@ extension ImagesListViewController {
         
         cell.cellImage.image = image
         cell.dateLabel.text = dateFormatter.string(from: Date())
+        cell.gradient.layer.cornerRadius = 16
+        cell.gradient.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
         
         let isLiked = indexPath.row % 2 == 0
         let likeImage = isLiked ? UIImage(named: "favoritesActive") : UIImage(named: "favoritesNoActive")
