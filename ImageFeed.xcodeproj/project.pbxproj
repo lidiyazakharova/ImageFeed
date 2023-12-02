@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		591F7A942B17C156000C6B0E /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591F7A932B17C156000C6B0E /* ProfileViewController.swift */; };
+		599DC5972B1B441200B0C091 /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 599DC5962B1B441200B0C091 /* SingleImageViewController.swift */; };
 		59AA187A2B1540A30085E35E /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59AA18792B1540A30085E35E /* GradientView.swift */; };
 		59CF2F592B0024CE00C639FD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59CF2F582B0024CE00C639FD /* AppDelegate.swift */; };
 		59CF2F5B2B0024CE00C639FD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59CF2F5A2B0024CE00C639FD /* SceneDelegate.swift */; };
@@ -21,6 +22,7 @@
 
 /* Begin PBXFileReference section */
 		591F7A932B17C156000C6B0E /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		599DC5962B1B441200B0C091 /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
 		59AA18792B1540A30085E35E /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		59CF2F552B0024CE00C639FD /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		59CF2F582B0024CE00C639FD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -76,6 +78,7 @@
 				59CF2F5A2B0024CE00C639FD /* SceneDelegate.swift */,
 				591F7A922B17C0FC000C6B0E /* Profile */,
 				59CF2F912B0E7B7400C639FD /* ImagesList */,
+				59F585D62B1B2B26004F6A81 /* SingleImage */,
 				59CF2F5E2B0024CE00C639FD /* Main.storyboard */,
 				59CF2F6C2B07EEFF00C639FD /* Helpers */,
 				59CF2F612B0024E500C639FD /* Assets.xcassets */,
@@ -101,6 +104,14 @@
 				59CF2F8F2B0E7B1E00C639FD /* ImagesListCell.swift */,
 			);
 			path = ImagesList;
+			sourceTree = "<group>";
+		};
+		59F585D62B1B2B26004F6A81 /* SingleImage */ = {
+			isa = PBXGroup;
+			children = (
+				599DC5962B1B441200B0C091 /* SingleImageViewController.swift */,
+			);
+			path = SingleImage;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -180,6 +191,7 @@
 				59AA187A2B1540A30085E35E /* GradientView.swift in Sources */,
 				591F7A942B17C156000C6B0E /* ProfileViewController.swift in Sources */,
 				59CF2F5B2B0024CE00C639FD /* SceneDelegate.swift in Sources */,
+				599DC5972B1B441200B0C091 /* SingleImageViewController.swift in Sources */,
 				59CF2F6E2B07EF6B00C639FD /* UIColor+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
