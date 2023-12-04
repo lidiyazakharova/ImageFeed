@@ -126,7 +126,7 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hio-W9-PoE">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" misplaced="YES" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="dng-1r-xi0" userLabel="Scaled Image">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="414" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="dng-1r-xi0" userLabel="Scaled Image">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="414"/>
                                     </imageView>
                                 </subviews>
@@ -134,7 +134,7 @@
                                     <constraint firstItem="dng-1r-xi0" firstAttribute="top" secondItem="Hio-W9-PoE" secondAttribute="top" id="4Od-6H-Io6"/>
                                     <constraint firstItem="dng-1r-xi0" firstAttribute="leading" secondItem="Hio-W9-PoE" secondAttribute="leading" id="ABi-6P-mQV"/>
                                     <constraint firstAttribute="trailing" secondItem="dng-1r-xi0" secondAttribute="trailing" id="Kiq-qL-i2W"/>
-                                    <constraint firstAttribute="bottom" secondItem="dng-1r-xi0" secondAttribute="bottom" constant="482" id="WCs-n0-142"/>
+                                    <constraint firstAttribute="bottom" secondItem="dng-1r-xi0" secondAttribute="bottom" id="WCs-n0-142"/>
                                 </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="XYz-qT-Qmf"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="F8d-yL-DTq"/>
@@ -154,6 +154,14 @@
                                     <action selector="didTapBackButton" destination="cmj-gR-B0A" eventType="touchUpInside" id="3Kr-il-9N5"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PNr-Mp-G0a" userLabel="Share Button">
+                                <rect key="frame" x="182" y="795" width="50" height="50"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="sharing"/>
+                                <connections>
+                                    <action selector="didTapShareButton:" destination="cmj-gR-B0A" eventType="touchUpInside" id="0Jy-vg-bqU"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="OmW-ca-Rij"/>
                         <color key="backgroundColor" name="YP Black"/>
@@ -161,9 +169,11 @@
                             <constraint firstAttribute="bottom" secondItem="Hio-W9-PoE" secondAttribute="bottom" id="9iq-jP-yqQ"/>
                             <constraint firstItem="YcE-Mk-xfP" firstAttribute="top" secondItem="OmW-ca-Rij" secondAttribute="top" constant="8" id="Ia9-fD-d9D"/>
                             <constraint firstItem="YcE-Mk-xfP" firstAttribute="leading" secondItem="OmW-ca-Rij" secondAttribute="leading" constant="8" id="MhR-SD-O4v"/>
+                            <constraint firstItem="PNr-Mp-G0a" firstAttribute="centerX" secondItem="OmW-ca-Rij" secondAttribute="centerX" id="OGl-If-c2k"/>
                             <constraint firstItem="Hio-W9-PoE" firstAttribute="top" secondItem="uXE-6y-t6M" secondAttribute="top" id="OTx-4X-Kt9"/>
                             <constraint firstItem="Hio-W9-PoE" firstAttribute="trailing" secondItem="OmW-ca-Rij" secondAttribute="trailing" id="fP8-aQ-Xkx"/>
                             <constraint firstItem="Hio-W9-PoE" firstAttribute="leading" secondItem="OmW-ca-Rij" secondAttribute="leading" id="fol-8g-ZW8"/>
+                            <constraint firstItem="OmW-ca-Rij" firstAttribute="bottom" secondItem="PNr-Mp-G0a" secondAttribute="bottom" constant="17" id="y0c-yS-KO9"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="dLU-wp-8jb"/>
@@ -275,6 +285,7 @@
         <image name="backward" width="24" height="24"/>
         <image name="exit" width="44" height="44"/>
         <image name="likeActive" width="44" height="44"/>
+        <image name="sharing" width="50" height="50"/>
         <image name="tab_editorial_active" width="30" height="30"/>
         <image name="tab_profile_active" width="30" height="30"/>
         <image name="userPhoto" width="70" height="70"/>
