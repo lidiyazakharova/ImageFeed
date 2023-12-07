@@ -20,6 +20,20 @@ final class ProfileViewController: UIViewController {
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
+    
+    private lazy var logoutButton: UIButton = {
+        let logoutButton = UIButton.systemButton(
+//            with: UIImage(systemName: "ipad.and.arrow.forward")!,
+            with: UIImage(named: "exit")!,
+            target: self,
+            action: #selector(Self.didTapButton)
+        )
+        logoutButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        logoutButton.widthAnchor.constraint(equalToConstant: 44).isActive = true
+        logoutButton.tintColor = .ypRed
+        logoutButton.translatesAutoresizingMaskIntoConstraints = false
+        return logoutButton
+    }()
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return.lightContent
@@ -29,6 +43,7 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         setImage()
         setText()
+        setButton()
     }
     
     private func setImage () {
@@ -47,11 +62,15 @@ final class ProfileViewController: UIViewController {
         textStack.addArrangedSubview(loginNameLabel)
         textStack.addArrangedSubview(descriptionLabel)
         
-        NSLayoutConstraint.activate([
-            textStack.topAnchor.constraint(equalTo: avatarImage.bottomAnchor, constant: 8),
-            textStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            textStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
-        ])
+        textStack.topAnchor.constraint(equalTo: avatarImage.bottomAnchor, constant: 8).isActive = true
+        textStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
+        textStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
+        
+//        NSLayoutConstraint.activate([
+//            textStack.topAnchor.constraint(equalTo: avatarImage.bottomAnchor, constant: 8),
+//            textStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+//            textStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
+//        ])
     }
     
     private func createLabel(size: CGFloat, weight: UIFont.Weight, text: String, color: UIColor) -> UILabel{
@@ -62,6 +81,18 @@ final class ProfileViewController: UIViewController {
         label.textColor = color
         label.font = UIFont.systemFont(ofSize: size, weight: weight)
         return label
+    }
+    
+    private func setButton() {
+        view.addSubview(logoutButton)
+        logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
+        logoutButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 45).isActive = true
+        logoutButton.leadingAnchor.constraint(greaterThanOrEqualToSystemSpacingAfter: avatarImage.trailingAnchor, multiplier: 1).isActive = true
+    }
+    
+    @objc
+    private func didTapButton() {
+        print(1)
     }
 }
 
