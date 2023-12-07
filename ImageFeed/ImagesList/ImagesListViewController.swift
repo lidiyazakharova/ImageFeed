@@ -15,9 +15,9 @@ final class ImagesListViewController: UIViewController {
     
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
     
-//    override var preferredStatusBarStyle: UIStatusBarStyle {
-//        return.lightContent
-//    }
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return.lightContent
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +31,6 @@ final class ImagesListViewController: UIViewController {
                 let viewController = segue.destination as! SingleImageViewController
                 let indexPath = sender as! IndexPath
                 let image = UIImage(named: photosName[indexPath.row])
-//                _ = viewController.view // CRASH FIXED !?
                 viewController.image = image
             } else {
                 super.prepare(for: segue, sender: sender)
