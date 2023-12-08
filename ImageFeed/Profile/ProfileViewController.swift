@@ -23,7 +23,6 @@ final class ProfileViewController: UIViewController {
     
     private lazy var logoutButton: UIButton = {
         let logoutButton = UIButton.systemButton(
-//            with: UIImage(systemName: "ipad.and.arrow.forward")!,
             with: UIImage(named: "exit")!,
             target: self,
             action: #selector(Self.didTapButton)
@@ -34,7 +33,7 @@ final class ProfileViewController: UIViewController {
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
         return logoutButton
     }()
-
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return.lightContent
     }
@@ -48,29 +47,10 @@ final class ProfileViewController: UIViewController {
     
     private func setImage () {
         view.addSubview(avatarImage)
-        avatarImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32).isActive = true
-        avatarImage.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
-    }
-    
-    private func setText() {
-        view.addSubview(textStack)
-        let nameLabel = createLabel(size: 23, weight: .bold, text: "Екатерина Новикова", color: .ypWhite)
-        let loginNameLabel = createLabel(size: 13, weight: .regular, text: "@ekaterina_nov", color: .ypGray)
-        let descriptionLabel = createLabel(size: 13, weight: .regular, text: "Hello, world!", color: .ypWhite)
-        
-        textStack.addArrangedSubview(nameLabel)
-        textStack.addArrangedSubview(loginNameLabel)
-        textStack.addArrangedSubview(descriptionLabel)
-        
-        textStack.topAnchor.constraint(equalTo: avatarImage.bottomAnchor, constant: 8).isActive = true
-        textStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
-        textStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
-        
-//        NSLayoutConstraint.activate([
-//            textStack.topAnchor.constraint(equalTo: avatarImage.bottomAnchor, constant: 8),
-//            textStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-//            textStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
-//        ])
+        NSLayoutConstraint.activate([
+            avatarImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
+            avatarImage.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16)
+        ])
     }
     
     private func createLabel(size: CGFloat, weight: UIFont.Weight, text: String, color: UIColor) -> UILabel{
@@ -83,16 +63,33 @@ final class ProfileViewController: UIViewController {
         return label
     }
     
+    private func setText() {
+        view.addSubview(textStack)
+        let nameLabel = createLabel(size: 23, weight: .bold, text: "Екатерина Новикова", color: .ypWhite)
+        let loginNameLabel = createLabel(size: 13, weight: .regular, text: "@ekaterina_nov", color: .ypGray)
+        let descriptionLabel = createLabel(size: 13, weight: .regular, text: "Hello, world!", color: .ypWhite)
+        textStack.addArrangedSubview(nameLabel)
+        textStack.addArrangedSubview(loginNameLabel)
+        textStack.addArrangedSubview(descriptionLabel)
+        NSLayoutConstraint.activate([
+            textStack.topAnchor.constraint(equalTo: avatarImage.bottomAnchor, constant: 8),
+            textStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            textStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
+        ])
+    }
+    
     private func setButton() {
         view.addSubview(logoutButton)
-        logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
-        logoutButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 45).isActive = true
-        logoutButton.leadingAnchor.constraint(greaterThanOrEqualToSystemSpacingAfter: avatarImage.trailingAnchor, multiplier: 1).isActive = true
+        NSLayoutConstraint.activate([
+        logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+        logoutButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 45),
+        logoutButton.leadingAnchor.constraint(greaterThanOrEqualToSystemSpacingAfter: avatarImage.trailingAnchor, multiplier: 1)
+        ])
     }
     
     @objc
     private func didTapButton() {
-        print(1)
+        print("logout")
     }
 }
 
