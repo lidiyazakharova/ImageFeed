@@ -149,7 +149,7 @@
                                     <constraint firstAttribute="width" constant="48" id="INX-4W-TOb"/>
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="backward"/>
+                                <state key="normal" image="backwardButton"/>
                                 <connections>
                                     <action selector="didTapBackButton" destination="cmj-gR-B0A" eventType="touchUpInside" id="3Kr-il-9N5"/>
                                 </connections>
@@ -228,7 +228,7 @@
     </scenes>
     <resources>
         <image name="0" width="200" height="132"/>
-        <image name="backward" width="24" height="24"/>
+        <image name="backwardButton" width="24" height="24"/>
         <image name="likeActive" width="44" height="44"/>
         <image name="sharing" width="50" height="50"/>
         <image name="tab_editorial_active" width="30" height="30"/>
