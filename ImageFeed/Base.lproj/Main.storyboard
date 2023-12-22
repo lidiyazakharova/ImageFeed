@@ -186,6 +186,52 @@
             </objects>
             <point key="canvasLocation" x="-226.08695652173915" y="-319.41964285714283"/>
         </scene>
+        <!--Auth View Controller-->
+        <scene sceneID="ba3-Sc-wb3">
+            <objects>
+                <viewController id="ZB2-IX-lhK" customClass="AuthViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="l0C-c0-HIB">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="auth_screen_logo" translatesAutoresizingMaskIntoConstraints="NO" id="9nu-PN-zoy">
+                                <rect key="frame" x="177" y="423" width="60" height="60"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ADc-Da-hnn" userLabel="authActionButton">
+                                <rect key="frame" x="16" y="724" width="382" height="48"/>
+                                <color key="backgroundColor" name="YP White"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="343" id="h1E-FS-VJb"/>
+                                    <constraint firstAttribute="height" constant="48" id="mnh-Lz-iOm"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Войти">
+                                    <fontDescription key="titleFontDescription" type="boldSystem" pointSize="17"/>
+                                    <color key="baseForegroundColor" name="YP Black"/>
+                                </buttonConfiguration>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="16"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Ktp-MC-3sj"/>
+                        <color key="backgroundColor" name="YP Black"/>
+                        <constraints>
+                            <constraint firstItem="ADc-Da-hnn" firstAttribute="leading" secondItem="Ktp-MC-3sj" secondAttribute="leading" constant="16" id="Doz-wi-Nq9" userLabel="Button.leading = Safe Area.leading + 16"/>
+                            <constraint firstItem="Ktp-MC-3sj" firstAttribute="bottom" secondItem="ADc-Da-hnn" secondAttribute="bottom" constant="90" id="JFo-sG-eYU" userLabel="Safe Area.bottom = Button.bottom + 90"/>
+                            <constraint firstItem="Ktp-MC-3sj" firstAttribute="trailing" secondItem="ADc-Da-hnn" secondAttribute="trailing" constant="16" id="YF2-py-moO" userLabel="Safe Area.trailing = Button.trailing + 16"/>
+                            <constraint firstItem="9nu-PN-zoy" firstAttribute="centerY" secondItem="Ktp-MC-3sj" secondAttribute="centerY" id="ap0-t1-O6W"/>
+                            <constraint firstItem="9nu-PN-zoy" firstAttribute="centerX" secondItem="Ktp-MC-3sj" secondAttribute="centerX" id="tRH-Td-7ol"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XzS-lj-is1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1268" y="-1258"/>
+        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="Qce-ZE-cdO">
             <objects>
@@ -228,6 +274,7 @@
     </scenes>
     <resources>
         <image name="0" width="200" height="132"/>
+        <image name="auth_screen_logo" width="60" height="60"/>
         <image name="backwardButton" width="24" height="24"/>
         <image name="likeActive" width="44" height="44"/>
         <image name="sharing" width="50" height="50"/>
