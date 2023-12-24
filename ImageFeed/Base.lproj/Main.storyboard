@@ -226,10 +226,10 @@
             </objects>
             <point key="canvasLocation" x="-2532" y="80"/>
         </scene>
-        <!--Web View Controller-->
+        <!--Web View View Controller-->
         <scene sceneID="fcT-u5-P0c">
             <objects>
-                <viewController id="suX-NK-L3q" customClass="WebViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="suX-NK-L3q" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="wzF-gD-nmE">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
