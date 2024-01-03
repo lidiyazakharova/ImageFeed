@@ -18,3 +18,4 @@ final class OAuth2TokenStorage {
         self.userDefaults = userDefaults
     }
 }
+

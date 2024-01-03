@@ -13,13 +13,15 @@ final class SplashViewController: UIViewController {
         super.viewDidAppear(animated)
 
         if let token = oauth2TokenStorage.token {
-            sleep(2)
-            print("01")
-            sleep(2)
-            print("02")
-            print(token)
+//            sleep(2)
+//            print("01")
+//            sleep(2)
+//            print("02")
+            print("Token: \(token)")
             switchToTabBarController()
         } else {
+            print("Not authed")
+            
             // Show Auth Screen
             performSegue(withIdentifier: ShowAuthenticationScreenSegueIdentifier, sender: nil)
         }
@@ -54,10 +56,11 @@ extension SplashViewController {
 
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
-        dismiss(animated: true) { [weak self] in
-            guard let self = self else { return }
-            self.fetchOAuthToken(code)
-        }
+//        dismiss(animated: true) { [weak self] in
+//            guard let self = self else { return }
+//            self.fetchOAuthToken(code)
+//        }
+        self.fetchOAuthToken(code)
     }
 
     private func fetchOAuthToken(_ code: String) {
