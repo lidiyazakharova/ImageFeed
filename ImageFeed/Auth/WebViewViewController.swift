@@ -72,11 +72,16 @@ extension WebViewViewController: WKNavigationDelegate {
         decidePolicyFor navigationAction: WKNavigationAction,
         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
     ) {
-        print("ITS LIT", navigationAction.request.url)
+//        print("ITS LIT", navigationAction.request.url)
         
         if let code = fetchCode(from: navigationAction) {
             delegate?.webViewViewController(self, didAuthenticateWithCode: code)
             decisionHandler(.cancel)
+            
+//            OAuth2Service.shared.fetchOAuthToken(code, completion: {result in
+//
+//            })
+            
         } else {
             decisionHandler(.allow)
         }
@@ -90,7 +95,7 @@ extension WebViewViewController: WKNavigationDelegate {
             let items = urlComponents.queryItems,
             let codeItem = items.first(where: { $0.name == "code" })
         {
-            print("МОЙ", codeItem.value)
+//            print("МОЙ", codeItem.value)
             return codeItem.value
         } else {
             return nil

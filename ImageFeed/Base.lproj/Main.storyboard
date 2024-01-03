@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2kJ-18-smo">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="CJQ-tG-RvP">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -206,7 +206,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="Qce-ZE-cdO">
             <objects>
-                <tabBarController id="fkr-EY-NAs" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="TabBarViewController" id="fkr-EY-NAs" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="OTK-sZ-FAv">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -348,7 +348,34 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pWl-Ux-CR2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2333" y="-1258"/>
+            <point key="canvasLocation" x="-2533" y="-1258"/>
+        </scene>
+        <!--Splash View Controller-->
+        <scene sceneID="fDQ-eo-InK">
+            <objects>
+                <viewController id="CJQ-tG-RvP" customClass="SplashViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="VCq-aV-9aO">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="splashScreenIcon" translatesAutoresizingMaskIntoConstraints="NO" id="9k3-CT-r9U">
+                                <rect key="frame" x="169.5" y="414" width="75" height="78"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="cKg-xp-Lnv"/>
+                        <color key="backgroundColor" name="YP Black"/>
+                        <constraints>
+                            <constraint firstItem="9k3-CT-r9U" firstAttribute="centerX" secondItem="cKg-xp-Lnv" secondAttribute="centerX" id="51b-SO-SqY"/>
+                            <constraint firstItem="9k3-CT-r9U" firstAttribute="centerY" secondItem="cKg-xp-Lnv" secondAttribute="centerY" id="kAo-wa-dHB"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <segue destination="2kJ-18-smo" kind="presentation" identifier="ShowAuthenticationScreen" modalPresentationStyle="fullScreen" id="pTb-S2-UpW"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="p7z-EE-FUH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-4297" y="-641"/>
         </scene>
     </scenes>
     <resources>
@@ -358,6 +385,7 @@
         <image name="likeActive" width="44" height="44"/>
         <image name="nav_back_button" width="24" height="24"/>
         <image name="sharing" width="50" height="50"/>
+        <image name="splashScreenIcon" width="75" height="78"/>
         <image name="tab_editorial_active" width="30" height="30"/>
         <image name="tab_profile_active" width="30" height="30"/>
         <namedColor name="YP Background">
