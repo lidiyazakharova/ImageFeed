@@ -12,16 +12,13 @@ final class WebViewViewController: UIViewController {
     static let authorizedPath = "/oauth/authorize/native"
     @IBOutlet private var webView: WKWebView!
     @IBOutlet private var progressView: UIProgressView!
-    
     weak var delegate: WebViewViewControllerDelegate?
-    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return.lightContent
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         webView.navigationDelegate = self
         loadWebView()
         updateProgress()
@@ -33,7 +30,6 @@ final class WebViewViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         webView.addObserver(
             self,
             forKeyPath: #keyPath(WKWebView.estimatedProgress),
@@ -72,21 +68,14 @@ extension WebViewViewController: WKNavigationDelegate {
         decidePolicyFor navigationAction: WKNavigationAction,
         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
     ) {
-//        print("ITS LIT", navigationAction.request.url)
-        
         if let code = fetchCode(from: navigationAction) {
             delegate?.webViewViewController(self, didAuthenticateWithCode: code)
             decisionHandler(.cancel)
-            
-//            OAuth2Service.shared.fetchOAuthToken(code, completion: {result in
-//
-//            })
-            
         } else {
             decisionHandler(.allow)
         }
     }
-    //    https://unsplash.com/oauth/authorize/native?code=56PqCC7E4TTMPlzp55PBNfuylA7lcFbb_glw3kpOYnw
+    
     private func fetchCode(from navigationAction: WKNavigationAction) -> String? {
         if
             let url = navigationAction.request.url,
@@ -95,12 +84,12 @@ extension WebViewViewController: WKNavigationDelegate {
             let items = urlComponents.queryItems,
             let codeItem = items.first(where: { $0.name == "code" })
         {
-//            print("МОЙ", codeItem.value)
             return codeItem.value
         } else {
             return nil
         }
     }
+    
     private func loadWebView(){
         var urlComponents = URLComponents(string: UnsplashAuthorizeURLString)!
         urlComponents.queryItems = [
@@ -110,7 +99,6 @@ extension WebViewViewController: WKNavigationDelegate {
             URLQueryItem(name: "scope", value: AccessScope)
         ]
         let url = urlComponents.url!
-        
         let request = URLRequest(url: url)
         webView.load(request)
     }
