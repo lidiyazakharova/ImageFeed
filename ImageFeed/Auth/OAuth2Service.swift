@@ -11,6 +11,51 @@ final class OAuth2Service {
             OAuth2TokenStorage().token = newValue
         } }
     
+//    private var task: URLSessionTask?
+//    private var lastCode: String?
+//    func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
+//            assert(Thread.isMainThread)                         // 4
+//            if task != nil {                                    // 5
+//                if lastCode != code {                           // 6
+//                    task?.cancel()                              // 7
+//                } else {
+//                    return                                      // 8
+//                }
+//            } else {
+//                if lastCode == code {                           // 9
+//                    return
+//                }
+//            }
+//            lastCode = code                                     // 10
+    
+    
+//            ||if lastCode == code { return }                      // 1
+//           ||task?.cancel()                                      // 2
+//           ||lastCode = code                                     // 3
+    
+    
+//            let request = makeRequest(code: code)               // 11
+//            let task = urlSession.dataTask(with: request) { data, response, error in
+//                DispatchQueue.main.async {                      // 12
+//                    completion(.success("")) // TODO [Sprint 10]// 13
+//                    self.task = nil                             // 14
+//                    if error != nil {                           // 15
+//                        self.lastCode = nil                     // 16
+//                    }
+//                }
+//            }
+//            self.task = task                                    // 17
+//            task.resume()                                       // 18
+//        }
+//
+//        private func makeRequest(code: String) -> URLRequest {  // 19
+//            guard let url = URL(string: "...\(code)") else { fatalError("Failed to create URL") }
+//            var request = URLRequest(url: url)
+//            request.httpMethod = "POST"
+//            return request
+//        }
+//    }
+//
     func fetchOAuthToken(
         _ code: String,
         completion: @escaping (Result<String, Error>) -> Void ){
