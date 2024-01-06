@@ -1,0 +1,11 @@
+import Foundation
+//MARK: - HTTP Request
+extension URLRequest {
+    static func makeHTTPRequest(
+        path: String,
+        httpMethod: String,
+        baseURL: URL) -> URLRequest {
+        var request = URLRequest(url: URL(string: path, relativeTo: baseURL)!)
+        request.httpMethod = httpMethod
+        return request
+    } }
