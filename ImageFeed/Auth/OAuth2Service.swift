@@ -24,7 +24,7 @@ final class OAuth2Service {
         //        let request = authTokenRequest(code: code)
         
         currentTask = fetchOAuthBody(request: request) { [weak self] response in
-//            self?.currentTask = nil
+            //            self?.currentTask = nil
             switch response {
             case .success(let body):
                 let authToken = body.accessToken
@@ -42,7 +42,7 @@ final class OAuth2Service {
         let fulfillCompletionOnMainThread: (Result<OAuthTokenResponseBody, Error>) -> Void = { result in DispatchQueue.main.async {
             completion(result)
         }
-        }
+    }
         
         let session = URLSession.shared
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
@@ -81,7 +81,8 @@ extension OAuth2Service {
             + "&&code=\(code)"
             + "&&grant_type=authorization_code",
             httpMethod: "POST",
-            baseURL: URL(string: Constants.baseURL)!)
+            baseURL: URL(string: Constants.baseURL)!
+        )
     }
 }
 
