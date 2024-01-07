@@ -19,7 +19,9 @@ final class ProfileService {
             return
         }
         
-        currentTask = fetchProfileResponse(request: request) { [weak self] response in
+        let session = URLSession.shared
+        currentTask = session.objectTask(for: request) {
+            [weak self] (response: Result<ProfileResponse, Error>) in
             self?.currentTask = nil
             switch response {
             case .success(let profileResponse):
@@ -29,37 +31,6 @@ final class ProfileService {
                 completion(.failure(error))
             }
         }
-    }
-    
-    
-    func fetchProfileResponse (request: URLRequest, completion: @escaping (Result<ProfileResponse, Error>) -> Void) -> URLSessionTask {
-        let fulfillCompletionOnMainThread: (Result<ProfileResponse, Error>) -> Void = { result in DispatchQueue.main.async {
-            completion(result)
-        }
-        }
-        
-        let session = URLSession.shared
-        let task = session.dataTask(with: request, completionHandler: { data, response, error in
-            if let data = data, let response = response, let statusCode = (response as? HTTPURLResponse)?.statusCode {
-                if 200 ..< 300 ~= statusCode {
-                    do {
-                        let decoder = JSONDecoder()
-                        let result = try decoder.decode(ProfileResponse.self, from: data)
-                        fulfillCompletionOnMainThread(.success(result))
-                    } catch {
-                        fulfillCompletionOnMainThread(.failure(NetworkError.decodingError(error)))
-                    }
-                } else {
-                    fulfillCompletionOnMainThread(.failure(NetworkError.httpStatusCode(statusCode)))
-                }
-            } else if let error = error {
-                fulfillCompletionOnMainThread(.failure(NetworkError.urlRequestError(error)))
-            } else {
-                fulfillCompletionOnMainThread(.failure(NetworkError.urlSessionError))
-            }
-        })
-        task.resume()
-        return task
     }
     
     func makeFetchProfileRequest (token: String) -> URLRequest? {

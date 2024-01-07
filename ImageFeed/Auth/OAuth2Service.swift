@@ -29,56 +29,28 @@ final class OAuth2Service {
         }
         //        let request = authTokenRequest(code: code)
         
-        currentTask = fetchOAuthBody(request: request) { [weak self] response in
-                        self?.currentTask = nil
+        let session = URLSession.shared
+        currentTask = session.objectTask(for: request) {
+            [weak self] (response: Result<OAuthTokenResponseBody, Error>) in
+            self?.currentTask = nil
             switch response {
             case .success(let body):
                 let authToken = body.accessToken
                 self?.storage.token = authToken
                 completion(.success(authToken))
-//                self?.currentTask = nil
+                //                self?.currentTask = nil
             case .failure(let error):
                 completion(.failure(error))
-//                if error != nil { self?.lastCode = nil }
+                //                if error != nil { self?.lastCode = nil }
             }
         }
-    }
-    
-    func fetchOAuthBody (request: URLRequest, completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void) -> URLSessionTask {
-        let fulfillCompletionOnMainThread: (Result<OAuthTokenResponseBody, Error>) -> Void = { result in DispatchQueue.main.async {
-            completion(result)
-        }
-    }
-        
-        let session = URLSession.shared
-        let task = session.dataTask(with: request, completionHandler: { data, response, error in
-            if let data = data, let response = response, let statusCode = (response as? HTTPURLResponse)?.statusCode {
-                if 200 ..< 300 ~= statusCode {
-                    do {
-                        let decoder = JSONDecoder()
-                        let result = try decoder.decode(OAuthTokenResponseBody.self, from: data)
-                        fulfillCompletionOnMainThread(.success(result))
-                    } catch {
-                        fulfillCompletionOnMainThread(.failure(NetworkError.decodingError(error)))
-                    }
-                } else {
-                    fulfillCompletionOnMainThread(.failure(NetworkError.httpStatusCode(statusCode)))
-                }
-            } else if let error = error {
-                fulfillCompletionOnMainThread(.failure(NetworkError.urlRequestError(error)))
-            } else {
-                fulfillCompletionOnMainThread(.failure(NetworkError.urlSessionError))
-            }
-        })
-        task.resume()
-        return task
     }
 }
 
 
 extension OAuth2Service {
     private func authTokenRequest(code: String) -> URLRequest? {
-//        URLRequest.makeHTTPRequest(
+        //        URLRequest.makeHTTPRequest(
         builder.makeHTTPRequest(
             path: "\(Constants.baseAuthTokenPath)"
             + "?client_id=\(Constants.accessKey)"
