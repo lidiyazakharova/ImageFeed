@@ -2,9 +2,13 @@ import UIKit
 
 final class ProfileService {
     static let shared = ProfileService()
-    
     private (set) var profile: Profile?
     private var currentTask: URLSessionTask?
+    private let builder: URLRequestBuilder
+    
+    init(builder: URLRequestBuilder = .shared){
+        self.builder = builder
+    }
     
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
         currentTask?.cancel()
@@ -59,7 +63,8 @@ final class ProfileService {
     }
     
     func makeFetchProfileRequest (token: String) -> URLRequest? {
-        URLRequest.makeHTTPRequest(
+//        URLRequest.makeHTTPRequest(
+        builder.makeHTTPRequest(
             path: "/me",
             httpMethod: "GET",
             baseURL: URL(string: Constants.defaultBaseURL)!

@@ -5,10 +5,16 @@ final class OAuth2Service {
     private let storage: OAuth2TokenStorage
     private var lastCode: String?
     private var currentTask: URLSessionTask?
+    private let builder: URLRequestBuilder
     
-    init(urlSession: URLSession = .shared, storage: OAuth2TokenStorage = .shared) {
+    init(
+        urlSession: URLSession = .shared,
+        storage: OAuth2TokenStorage = .shared,
+        builder: URLRequestBuilder = .shared
+    ) {
         self.urlSession = urlSession
         self.storage = storage
+        self.builder = builder
     }
     
     func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
@@ -24,16 +30,16 @@ final class OAuth2Service {
         //        let request = authTokenRequest(code: code)
         
         currentTask = fetchOAuthBody(request: request) { [weak self] response in
-            //            self?.currentTask = nil
+                        self?.currentTask = nil
             switch response {
             case .success(let body):
                 let authToken = body.accessToken
                 self?.storage.token = authToken
                 completion(.success(authToken))
-                self?.currentTask = nil
+//                self?.currentTask = nil
             case .failure(let error):
                 completion(.failure(error))
-                if error != nil { self?.lastCode = nil }
+//                if error != nil { self?.lastCode = nil }
             }
         }
     }
@@ -67,13 +73,13 @@ final class OAuth2Service {
         task.resume()
         return task
     }
-    
 }
 
 
 extension OAuth2Service {
     private func authTokenRequest(code: String) -> URLRequest? {
-        URLRequest.makeHTTPRequest(
+//        URLRequest.makeHTTPRequest(
+        builder.makeHTTPRequest(
             path: "\(Constants.baseAuthTokenPath)"
             + "?client_id=\(Constants.accessKey)"
             + "&&client_secret=\(Constants.secretKey)"
