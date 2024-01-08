@@ -2,40 +2,47 @@ import Foundation
 
 final class ProfileImageService {
     static let shared = ProfileImageService()
-    private (set) var profile: Profile?
+    static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
+    
     private var currentTask: URLSessionTask?
+    private (set) var avatarURL: URL?
     private let builder: URLRequestBuilder
     
     init(builder: URLRequestBuilder = .shared){
         self.builder = builder
     }
     
-    func fetchProfileImage(_ token: String, completion: @escaping (Result<ProfileImage, Error>) -> Void) {
-//        currentTask?.cancel()
-//
-//        guard let request = makeFetchProfileRequest(token: token) else {
-//            assertionFailure("Invalid request")
-//            completion(.failure(NetworkError.invalidRequest))
-//            return
-//        }
-//
-//        let session = URLSession.shared
-//        currentTask = session.objectTask(for: request) {
-//            [weak self] (response: Result<ProfileImage, Error>) in
-//            self?.currentTask = nil
-//            switch response {
-//            case .success(let profileImage):
-//                let profile = Profile(result: profileImage)
-//                completion(.success(profile))
-//            case .failure(let error):
-//                completion(.failure(error))
-//            }
-//        }
+    func fetchProfileImageURL(userName: String, completion: @escaping (Result<String, Error>) -> Void) {
+        assert(Thread.isMainThread)
+        
+        guard let request = makeImageRequest(userName: userName) else { return }
+        let session = URLSession.shared
+        let task = session.objectTask(for: request) { [weak self] (result: Result<ProfileResponse, Error>) in
+            guard let self = self else { return }
+            switch result {
+            case.success(let profilePhoto):
+                guard let mediumPhoto = profilePhoto.profileImage?.medium else { return }
+                self.avatarURL = URL(string: mediumPhoto)
+                completion(.success(mediumPhoto))
+                
+                NotificationCenter.default.post(
+                    name: ProfileImageService.didChangeNotification,
+                    object: self,
+                    userInfo: ["URL": mediumPhoto]
+                )
+                
+            case.failure(let error):
+                completion(.failure(error))
+            }
+            self.currentTask = nil
+        }
+        self.currentTask = task
+        task.resume()
     }
     
-    func makeFetchProfileRequest (token: String) -> URLRequest? {
+    func makeImageRequest (userName: String) -> URLRequest? {
         builder.makeHTTPRequest(
-            path: "/me",
+            path: "/users/ \(userName)",
             httpMethod: "GET",
             baseURL: URL(string: Constants.defaultBaseURL)!
         )

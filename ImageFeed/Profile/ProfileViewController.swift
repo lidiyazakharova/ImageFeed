@@ -1,8 +1,16 @@
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
     //MARK: - Private Properties
+    //    var name: String
+    //    var login: String
+    //    var description: String
+    private let profileImageService = ProfileImageService.shared
+    private let profileService = ProfileService.shared
+    private var profileImageServiceObserver: NSObjectProtocol?
+    
     private lazy var avatarImage: UIImageView = {
         let avatarImage = UIImageView()
         avatarImage.image = UIImage(named: "userPhoto")
@@ -14,6 +22,7 @@ final class ProfileViewController: UIViewController {
     } ()
     
     private lazy var textStack: UIStackView = {
+        
         let stack = UIStackView()
         stack.axis = .vertical
         stack.spacing = 8
@@ -39,37 +48,101 @@ final class ProfileViewController: UIViewController {
         return.lightContent
     }
     
+    //Notification
+    override init(nibName:String?, bundle: Bundle?) {
+        super.init(nibName: nibName, bundle: bundle)
+        addObserver()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        addObserver()
+    }
+    
+    deinit {
+        removeObserver()
+    }
+    
+    private func addObserver() {
+        NotificationCenter.default.addObserver(                 // 1
+            self,                                               // 2
+            selector: #selector(updateAvatar(notification:)),   // 3
+            name: ProfileImageService.didChangeNotification,    // 4
+            object: nil)                                        // 5
+    }
+    
+    private func removeObserver() {
+        NotificationCenter.default.removeObserver(              // 6
+            self,                                               // 7
+            name: ProfileImageService.didChangeNotification,    // 8
+            object: nil)                                        // 9
+    }
+    
+    @objc                                                       // 10
+    private func updateAvatar(notification: Notification) {     // 11
+        guard
+            isViewLoaded,                                       // 12
+            let userInfo = notification.userInfo,               // 13
+            let profileImageURL =  notification.userInfoImageURL,  // 14
+            let url = URL(string: profileImageURL)              // 15
+        else { return }
+        
+    }
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setImage()
         setText()
         setButton()
+        
+        if let url = profileImageService.avatarURL {
+            updateAvatar(url: url)
+        }
+        profileImageServiceObserver = NotificationCenter.default.addObserver(
+            forName: ProfileImageService.didChangeNotification, // 3
+            object: nil,                                        // 4
+            queue: .main                                        // 5
+        ) { [weak self] _ in
+            guard let self = self else { return }
+            self.updateAvatar()                                 // 6
+        }
+        updateAvatar()                                              // 7
     }
-//        profileImageServiceObserver = NotificationCenter.default.addObserver(
-//            forName: ProfileImageService.didChangeNotification,
-//            object: nil,
-//            queue: .main
-//        ){ [weak self] _ in
-//            guard let self = self else { return }
-//            self.updateAvatar()
-//        }
-//        updateAvatar()
-//
-//        //TO DO load image
-//    }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        guard let profile = ProfileService.shared.profile else {
-//            assertionFailure("No saved profile")
-//            return }
-//
-//        self.textStack.nameLabel.text = profile.name
-//        self.textStack.descriptionLabel.text = profile.bio
-//        self.textStack.loginNameLabel.text = profile.loginName
-//    }
+    private func updateAvatar() {                                   // 8
+        guard
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+        
+        //        profileImageServiceObserver = NotificationCenter.default.addObserver(
+        //            forName: ProfileImageService.didChangeNotification,
+        //            object: nil,
+        //            queue: .main
+        //        ){ [weak self] notification in
+        //            self?.updateAvatar(notification: notification)
+        //        }
+    }
     
-   
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        guard let profile = ProfileService.shared.profile else {
+            assertionFailure("No saved profile")
+            return }
+        
+        //        self.textStack.nameLabel.text = profile.name
+        //        self.textStack.descriptionLabel.text = profile.bio
+        //        self.textStack.loginNameLabel.text = profile.loginName
+        
+        profileImageService.fetchProfileImageURL(userName: profile.username) { _ in
+            //no completion???
+        }
+    }
+    
+    
     //MARK: - Private Functions
     private func setImage () {
         view.addSubview(avatarImage)
@@ -91,9 +164,9 @@ final class ProfileViewController: UIViewController {
     
     private func setText() {
         view.addSubview(textStack)
-        let nameLabel = createLabel(size: 23, weight: .bold, text: "Екатерина Новикова", color: .ypWhite)
-        let loginNameLabel = createLabel(size: 13, weight: .regular, text: "@ekaterina_nov", color: .ypGray)
-        let descriptionLabel = createLabel(size: 13, weight: .regular, text: "Hello, world!", color: .ypWhite)
+        let nameLabel = createLabel(size: 23, weight: .bold, text: "\\name", color: .ypWhite)
+        let loginNameLabel = createLabel(size: 13, weight: .regular, text: "@\\login", color: .ypGray)
+        let descriptionLabel = createLabel(size: 13, weight: .regular, text: "\\description", color: .ypWhite)
         textStack.addArrangedSubview(nameLabel)
         textStack.addArrangedSubview(loginNameLabel)
         textStack.addArrangedSubview(descriptionLabel)
@@ -119,3 +192,30 @@ final class ProfileViewController: UIViewController {
     }
 }
 
+//@objc
+//private func updateAvatar(notification: Notification) {
+//    guard
+//        isViewLoaded,
+//        let userInfo = notification.userInfo,
+//        //        let profileImageURL = userInfo["URL"] as? String,
+//        let profileImageURL = notification.userInfoImageURL,
+//        let url = URL(string: profileImageURL)
+//    else { return }
+//
+//    updateAvatar(url: url)
+//}
+
+//private func updateAvatar(url: URL) {
+//    profileImage.kf.indicatorType = .activity
+//    ley processor = RoundCornerImageProcessor(cornerRadius: 61)
+//    profileImage.kf.setImage(with: url, options: [.processor(processor)])
+//}
+
+
+extension Notification {
+    static let userInfoImageURLKey: String = "URL"
+    
+    var userInfoImageURL: String? {
+        userInfo?[Notification.userInfoImageURLKey] as? String
+    }
+}
