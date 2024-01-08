@@ -1,11 +1,13 @@
 import Foundation
 
 final class OAuth2Service {
+   
     private let urlSession: URLSession
     private let storage: OAuth2TokenStorage
+    private let builder: URLRequestBuilder
     private var lastCode: String?
     private var currentTask: URLSessionTask?
-    private let builder: URLRequestBuilder
+  
     
     init(
         urlSession: URLSession = .shared,
@@ -17,10 +19,12 @@ final class OAuth2Service {
         self.builder = builder
     }
     
+    var isAuthenticated: Bool { storage.token != nil }
+    
     func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
         if lastCode == code { return }
         currentTask?.cancel()
-        lastCode = code
+        lastCode = code //проверить решение по состоянию гонки
         
         guard let request = authTokenRequest(code: code) else {
             assertionFailure("Invalid request")
@@ -32,16 +36,17 @@ final class OAuth2Service {
         let session = URLSession.shared
         currentTask = session.objectTask(for: request) {
             [weak self] (response: Result<OAuthTokenResponseBody, Error>) in
-            self?.currentTask = nil
+//            self?.currentTask = nil
             switch response {
             case .success(let body):
                 let authToken = body.accessToken
                 self?.storage.token = authToken
                 completion(.success(authToken))
-                //                self?.currentTask = nil
+                self?.currentTask = nil
             case .failure(let error):
                 completion(.failure(error))
-                //                if error != nil { self?.lastCode = nil }
+                self?.lastCode = nil
+//                if error != nil { self?.lastCode = nil }
             }
         }
     }

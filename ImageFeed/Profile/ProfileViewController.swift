@@ -2,6 +2,7 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     
+    //MARK: - Private Properties
     private lazy var avatarImage: UIImageView = {
         let avatarImage = UIImageView()
         avatarImage.image = UIImage(named: "userPhoto")
@@ -33,7 +34,7 @@ final class ProfileViewController: UIViewController {
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
         return logoutButton
     }()
-    
+    //MARK: - UIViewController
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return.lightContent
     }
@@ -44,7 +45,32 @@ final class ProfileViewController: UIViewController {
         setText()
         setButton()
     }
+//        profileImageServiceObserver = NotificationCenter.default.addObserver(
+//            forName: ProfileImageService.didChangeNotification,
+//            object: nil,
+//            queue: .main
+//        ){ [weak self] _ in
+//            guard let self = self else { return }
+//            self.updateAvatar()
+//        }
+//        updateAvatar()
+//
+//        //TO DO load image
+//    }
     
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        guard let profile = ProfileService.shared.profile else {
+//            assertionFailure("No saved profile")
+//            return }
+//
+//        self.textStack.nameLabel.text = profile.name
+//        self.textStack.descriptionLabel.text = profile.bio
+//        self.textStack.loginNameLabel.text = profile.loginName
+//    }
+    
+   
+    //MARK: - Private Functions
     private func setImage () {
         view.addSubview(avatarImage)
         NSLayoutConstraint.activate([

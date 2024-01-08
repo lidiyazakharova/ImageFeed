@@ -2,10 +2,10 @@ import UIKit
 
 final class AlertPresenter {
     
-    private weak var alertDelegate: UIViewController?
+    weak var delegate: UIViewController?
     
-    init(alertDelegate: UIViewController? = nil) {
-        self.alertDelegate = alertDelegate
+    init(delegate: UIViewController? = nil) {
+        self.delegate = delegate
     }
     
     func showAlert(title: String, message: String, handler: @escaping() -> Void) {
@@ -16,7 +16,7 @@ final class AlertPresenter {
             handler()
         }
         alert.addAction(alertAction)
-        alertDelegate?.present(alert, animated: true)
+        delegate?.present(alert, animated: true)
     }
 }
 
