@@ -1,6 +1,6 @@
 import Foundation
 
-struct ProfileResponse: Decodable {
+struct ProfileResult: Codable {
     let username: String
     let firstName: String?
     let lastName: String?
@@ -16,7 +16,7 @@ struct ProfileResponse: Decodable {
     //    }
 }
 
-struct ProfileImage: Decodable {
+struct ProfileImage: Codable {
     let small: String?
     let medium: String?
     let large: String?
@@ -30,7 +30,7 @@ struct Profile {
 }
 
 extension Profile {
-    init(result profile: ProfileResponse) {
+    init(result profile: ProfileResult) {
         self.init(
             username: profile.username,
             name: "\(profile.firstName ?? "") \(profile.lastName ?? "")",

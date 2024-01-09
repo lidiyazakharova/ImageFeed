@@ -21,7 +21,7 @@ final class ProfileService {
         
         let session = URLSession.shared
         currentTask = session.objectTask(for: request) {
-            [weak self] (response: Result<ProfileResponse, Error>) in
+            [weak self] (response: Result<ProfileResult, Error>) in
             self?.currentTask = nil
             switch response {
             case .success(let profileResult):

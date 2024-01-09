@@ -49,45 +49,45 @@ final class ProfileViewController: UIViewController {
     }
     
     //Notification
-    override init(nibName:String?, bundle: Bundle?) {
-        super.init(nibName: nibName, bundle: bundle)
-        addObserver()
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        addObserver()
-    }
-    
-    deinit {
-        removeObserver()
-    }
-    
-    private func addObserver() {
-        NotificationCenter.default.addObserver(                 // 1
-            self,                                               // 2
-            selector: #selector(updateAvatar(notification:)),   // 3
-            name: ProfileImageService.didChangeNotification,    // 4
-            object: nil)                                        // 5
-    }
-    
-    private func removeObserver() {
-        NotificationCenter.default.removeObserver(              // 6
-            self,                                               // 7
-            name: ProfileImageService.didChangeNotification,    // 8
-            object: nil)                                        // 9
-    }
-    
-    @objc                                                       // 10
-    private func updateAvatar(notification: Notification) {     // 11
-        guard
-            isViewLoaded,                                       // 12
-            let userInfo = notification.userInfo,               // 13
-            let profileImageURL =  notification.userInfoImageURL,  // 14
-            let url = URL(string: profileImageURL)              // 15
-        else { return }
-        
-    }
+//    override init(nibName:String?, bundle: Bundle?) {
+//        super.init(nibName: nibName, bundle: bundle)
+//        addObserver()
+//    }
+//
+//    required init?(coder: NSCoder) {
+//        super.init(coder: coder)
+//        addObserver()
+//    }
+//
+//    deinit {
+//        removeObserver()
+//    }
+//
+//    private func addObserver() {
+//        NotificationCenter.default.addObserver(                 // 1
+//            self,                                               // 2
+//            selector: #selector(updateAvatar(notification:)),   // 3
+//            name: ProfileImageService.didChangeNotification,    // 4
+//            object: nil)                                        // 5
+//    }
+//
+//    private func removeObserver() {
+//        NotificationCenter.default.removeObserver(              // 6
+//            self,                                               // 7
+//            name: ProfileImageService.didChangeNotification,    // 8
+//            object: nil)                                        // 9
+//    }
+//
+//    @objc                                                       // 10
+//    private func updateAvatar(notification: Notification) {     // 11
+//        guard
+//            isViewLoaded,                                       // 12
+//            let userInfo = notification.userInfo,               // 13
+//            let profileImageURL =  notification.userInfoImageURL,  // 14
+//            let url = URL(string: profileImageURL)              // 15
+//        else { return }
+//
+//    }
     
     
     
@@ -97,9 +97,10 @@ final class ProfileViewController: UIViewController {
         setText()
         setButton()
         
-        if let url = profileImageService.avatarURL {
-            updateAvatar(url: url)
-        }
+//        if let url = profileImageService.avatarURL {
+//            updateAvatar(url: url)
+//        }
+        
         profileImageServiceObserver = NotificationCenter.default.addObserver(
             forName: ProfileImageService.didChangeNotification, // 3
             object: nil,                                        // 4
@@ -113,9 +114,19 @@ final class ProfileViewController: UIViewController {
     
     private func updateAvatar() {                                   // 8
         guard
-            let profileImageURL = ProfileImageService.shared.avatarURL,
-            let url = URL(string: profileImageURL)
+            let profileImageURL = ProfileImageService.shared.avatarURL
+//            let url = URL(string: profileImageURL)
         else { return }
+        
+        print("profileImageURL", profileImageURL) }
+    
+//To do добавить KingsFisher
+    
+//        private func updateAvatar(url: URL) {
+//            profileImage.kf.indicatorType = .activity
+//            ley processor = RoundCornerImageProcessor(cornerRadius: 61)
+//            profileImage.kf.setImage(with: url, options: [.processor(processor)])
+//        }
         
         //        profileImageServiceObserver = NotificationCenter.default.addObserver(
         //            forName: ProfileImageService.didChangeNotification,
@@ -124,7 +135,7 @@ final class ProfileViewController: UIViewController {
         //        ){ [weak self] notification in
         //            self?.updateAvatar(notification: notification)
         //        }
-    }
+//    }
     
     
     override func viewWillAppear(_ animated: Bool) {

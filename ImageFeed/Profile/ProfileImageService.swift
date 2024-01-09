@@ -17,7 +17,7 @@ final class ProfileImageService {
         
         guard let request = makeImageRequest(userName: userName) else { return }
         let session = URLSession.shared
-        let task = session.objectTask(for: request) { [weak self] (result: Result<ProfileResponse, Error>) in
+        let task = session.objectTask(for: request) { [weak self] (result: Result<ProfileResult, Error>) in
             guard let self = self else { return }
             switch result {
             case.success(let profilePhoto):
