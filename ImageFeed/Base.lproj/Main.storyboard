@@ -206,7 +206,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="Qce-ZE-cdO">
             <objects>
-                <tabBarController storyboardIdentifier="TabBarViewController" id="fkr-EY-NAs" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="TabBarViewController" id="fkr-EY-NAs" customClass="TabBarController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="OTK-sZ-FAv">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>

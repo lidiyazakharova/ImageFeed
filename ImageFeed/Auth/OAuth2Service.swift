@@ -22,6 +22,7 @@ final class OAuth2Service {
     var isAuthenticated: Bool { storage.token != nil }
     
     func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
+        assert(Thread.isMainThread)
         if lastCode == code { return }
         currentTask?.cancel()
         lastCode = code //проверить решение по состоянию гонки
