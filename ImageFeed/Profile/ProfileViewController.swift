@@ -10,7 +10,7 @@ final class ProfileViewController: UIViewController {
     
     private lazy var avatarImage: UIImageView = {
         let avatarImage = UIImageView()
-        avatarImage.image = UIImage(named: "userPhoto")
+        avatarImage.image = UIImage(named: "userPick")
         avatarImage.contentMode = .scaleToFill
         avatarImage.translatesAutoresizingMaskIntoConstraints = false
         avatarImage.heightAnchor.constraint(equalToConstant: 70).isActive = true
@@ -41,15 +41,15 @@ final class ProfileViewController: UIViewController {
     }()
     
     private lazy var nameLabel: UILabel = {
-        createLabel(size: 23, weight: .bold, text: "", color: .ypWhite)
+        createLabel(size: 23, weight: .bold, text: "Name", color: .ypWhite)
     }()
     
     private lazy var loginNameLabel: UILabel = {
-        createLabel(size: 13, weight: .regular, text: "", color: .ypGray)
+        createLabel(size: 13, weight: .regular, text: "login", color: .ypGray)
     }()
     
     private lazy var descriptionLabel: UILabel = {
-        createLabel(size: 13, weight: .regular, text: "", color: .ypWhite)
+        createLabel(size: 13, weight: .regular, text: "Description", color: .ypWhite)
     }()
     
     //MARK: - UIViewController
@@ -94,7 +94,7 @@ final class ProfileViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         guard let profile = ProfileService.shared.profile else {
-            assertionFailure("No saved profile")
+//            assertionFailure("No saved profile")
             return
         }
         

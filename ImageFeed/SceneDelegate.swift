@@ -6,13 +6,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let scene = (scene as? UIWindowScene) else { return }
-        window = UIWindow(windowScene: scene)                   // 1 Создаём окно UIWindow с заданной сценой.
+        self.window = UIWindow(windowScene: scene)
+        // 1 Создаём окно UIWindow с заданной сценой.
 //        window?.rootViewController = UIStoryboard(              // 2 Создаём и устанавливаем корневой View Controller для окна. Так как сейчас SplashViewController свёрстан в Storyboard, он создаётся методом instantiateInitialViewController. Если же View полностью сверстать в коде, можно создавать его, используя конструктор по умолчанию SplashViewController().
 //            name: "Main",
 //            bundle: .main
 //        ).instantiateInitialViewController()  //?? SplashViewController().
         
-        window?.rootViewController = SplashViewController()
+        self.window?.rootViewController = SplashViewController()
+        self.window?.makeKeyAndVisible()
     }
     
     
@@ -50,7 +52,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-
-
 }
-
