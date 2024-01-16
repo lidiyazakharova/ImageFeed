@@ -1,16 +1,13 @@
 import UIKit
-//import ProgressHUD
 
 final class SplashViewController: UIViewController {
     
     //MARK: - Private Properties
     private let ShowAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
     private let oauth2Service = OAuth2Service()
-    //    private let oauth2TokenStorage = OAuth2TokenStorage()
     private var alertPresenter = AlertPresenter()
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
-//    private var wasChecked: Bool = false // ????
     
     private lazy var splashScreenImage: UIImageView = {
         let splashScreenImage = UIImageView()
@@ -22,23 +19,6 @@ final class SplashViewController: UIViewController {
         return splashScreenImage
     } ()
     
-    //    override func viewDidAppear(_ animated: Bool) {
-    //        super.viewDidAppear(animated)
-    //
-    //        //        if oauth2TokenStorage.token != nil { } else {}
-    //        //          if let token = oauth2TokenStorage.token {
-    //        if oauth2TokenStorage.token != nil {
-    //            switchToTabBarController()
-    //        } else {
-    //            performSegue(withIdentifier: ShowAuthenticationScreenSegueIdentifier, sender: nil)
-    //        }
-    //    }
-    //
-    //    override func viewWillAppear(_ animated: Bool) {
-    //        super.viewWillAppear(animated)
-    //        setNeedsStatusBarAppearanceUpdate()
-    //    }
-    
     //MARK: - UIViewController
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return.lightContent
@@ -47,7 +27,7 @@ final class SplashViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         alertPresenter.delegate = self
-        view.backgroundColor = .ypRed // CHANGE COLOR
+        view.backgroundColor = .ypBlack
         setSplashScreenImage()
     }
     
@@ -71,17 +51,13 @@ final class SplashViewController: UIViewController {
     }
     
     private func checkAuthStatus() {
-//        guard wasChecked else {return}
-//        wasChecked = true //проверка входа
         
         if  oauth2Service.isAuthenticated {
             UIBlockingProgressHUD.show()
-            
             fetchProfile { [weak self] in
                 UIBlockingProgressHUD.dismiss()
                 self?.switchToTabBarController()
             }
-            
         } else {
             showAuthController()
         }
@@ -103,8 +79,6 @@ final class SplashViewController: UIViewController {
         window.rootViewController = tabBarController
     }
 }
-
-
 
 //MARK: - Extensions
 extension SplashViewController {
@@ -151,12 +125,6 @@ extension SplashViewController: AuthViewControllerDelegate {
         profileService.fetchProfile { [weak self] profileResult in
             switch profileResult {
             case.success(_):
-//            case.success(let profile):
-//                print("\(profile.username)")
-//                print("\(profile.loginName)")
-//                print("\(profile.name)")
-//                print("\(profile.bio)")
-                
                 self?.switchToTabBarController()
             case.failure(let error):
                 self?.showLoginAlert(error: error)
@@ -165,28 +133,15 @@ extension SplashViewController: AuthViewControllerDelegate {
         }
     }
     
-    //    БЫЛО private func fetchOAuthToken(_ code: String) {
-    //            guard let self = self else { return }
-    //            switch result {
-    //            case .success:
-    //                self.switchToTabBarController()
-    //                ProgressHUD.dismiss()
-    //            case .failure:
-    //                ProgressHUD.dismiss()
-    //            }
-    //        }
-    //    }
-    
     private func showLoginAlert(error: Error) {
         alertPresenter.showAlert(title: "Что-то пошло не так :(",
                                  message: "Не удалось войти в систему, \(error.localizedDescription)") {
             self.performSegue(withIdentifier: self.ShowAuthenticationScreenSegueIdentifier, sender: nil)
-        } //проверить идентификатор сети Добавить кнопку
+        }
     }
     
     private func presentAuthScreen() {
         let storyboard = UIStoryboard(name: "Main", bundle: .main)
-        //        storyboard.instantiateInitialViewController()
         let viewController = storyboard.instantiateViewController(identifier: "AuthViewControllerID")
         guard let authViewController = viewController as? AuthViewController else { return }
         authViewController.delegate = self

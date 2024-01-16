@@ -35,14 +35,11 @@ final class ProfileService {
     }
     
     func makeFetchProfileRequest () -> URLRequest? {
-//        URLRequest.makeHTTPRequest(
         builder.makeHTTPRequest(
             path: "/me",
             httpMethod: "GET",
             baseURL: URL(string: Constants.defaultBaseURL)!
-        )
-        
+        )        
     }
-    
 }
 

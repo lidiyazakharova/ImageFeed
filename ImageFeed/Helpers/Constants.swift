@@ -9,7 +9,6 @@ enum Constants {
     static let baseAuthTokenPath = "/oauth/token"
     static let authorizedPath = "/oauth/authorize/native"
     
-    
     //MARK: Unsplash api constants
     static let accessKey = "VxG9li5SL5IH3aD7qCDXVZQ7Klv-qAbvIduwAh_rJAc"
     static let secretKey = "fJLnw76SaLMIqOVzKKN5qyr8Ke-V8eCULogEnZsH5ik"
