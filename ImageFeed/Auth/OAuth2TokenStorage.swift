@@ -11,7 +11,11 @@ final class OAuth2TokenStorage {
             keychainWrapper.string(forKey: Constants.bearerToken)
         }
         set {
-            guard let newValue = newValue else {return}
+            guard let newValue = newValue else {
+                keychainWrapper.removeObject(forKey: Constants.bearerToken)
+                return
+            }
+            
             keychainWrapper.set(newValue, forKey: Constants.bearerToken)
         }
     }

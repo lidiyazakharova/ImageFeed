@@ -123,11 +123,11 @@ extension SplashViewController {
 //MARK: - AuthViewControllerDelegate
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
-        //        UIBlockingProgressHUD.show()
+        UIBlockingProgressHUD.show()
+        
         dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
             self.fetchOAuthToken(code)
-//            self.fetchOAuthToken(code)
         }
     }
     
@@ -151,6 +151,12 @@ extension SplashViewController: AuthViewControllerDelegate {
         profileService.fetchProfile { [weak self] profileResult in
             switch profileResult {
             case.success(_):
+//            case.success(let profile):
+//                print("\(profile.username)")
+//                print("\(profile.loginName)")
+//                print("\(profile.name)")
+//                print("\(profile.bio)")
+                
                 self?.switchToTabBarController()
             case.failure(let error):
                 self?.showLoginAlert(error: error)

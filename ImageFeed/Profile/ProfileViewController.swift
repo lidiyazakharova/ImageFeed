@@ -4,9 +4,6 @@ import Kingfisher
 final class ProfileViewController: UIViewController {
     
     //MARK: - Private Properties
-    //    var name: String
-    //    var login: String
-    //    var description: String
     private let profileImageService = ProfileImageService.shared
     private let profileService = ProfileService.shared
     private var profileImageServiceObserver: NSObjectProtocol?
@@ -22,7 +19,6 @@ final class ProfileViewController: UIViewController {
     } ()
     
     private lazy var textStack: UIStackView = {
-        
         let stack = UIStackView()
         stack.axis = .vertical
         stack.spacing = 8
@@ -43,6 +39,19 @@ final class ProfileViewController: UIViewController {
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
         return logoutButton
     }()
+    
+    private lazy var nameLabel: UILabel = {
+        createLabel(size: 23, weight: .bold, text: "", color: .ypWhite)
+    }()
+    
+    private lazy var loginNameLabel: UILabel = {
+        createLabel(size: 13, weight: .regular, text: "", color: .ypGray)
+    }()
+    
+    private lazy var descriptionLabel: UILabel = {
+        createLabel(size: 13, weight: .regular, text: "", color: .ypWhite)
+    }()
+    
     //MARK: - UIViewController
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return.lightContent
@@ -55,10 +64,6 @@ final class ProfileViewController: UIViewController {
         setText()
         setButton()
         
-//        if let url = profileImageService.avatarURL {
-//            updateAvatar(url: url)
-//        }
-        
         profileImageServiceObserver = NotificationCenter.default.addObserver(
             forName: ProfileImageService.didChangeNotification, // 3
             object: nil,                                        // 4
@@ -67,40 +72,35 @@ final class ProfileViewController: UIViewController {
             guard let self = self else { return }
             self.updateAvatar()                                 // 6
         }
+        
         updateAvatar()                                              // 7
     }
     
-    private func updateAvatar() { }                                  // 8
-//        guard
-//            let profileImageURL = ProfileImageService.shared.avatarURL,
-////            let url = URL(string: profileImageURL)
-////                let profileImageURL = userInfo["URL"] as? String
-////                let profileImageURL = notification.userInfoImageURL,
-////                       let url = profileImageURL as? String
-//        else { return }
-//
-//        print("profileImageURL", profileImageURL) } //??????????
-    
-//To do добавить KingsFisher
-    
-//        private func updateAvatar(url: URL) {
-//            let processor = RoundCornerImageProcessor(cornerRadius: 61)
-//            profileImage.kf.indicatorType = .activity
-//            profileImage.kf.setImage(with: url, options: [.processor(processor)])
-//        }
-        
+    private func updateAvatar() {
+        guard let profileImageURL = ProfileImageService.shared.avatarURL
+//            let url = URL(string: profileImageURL)
+//                let profileImageURL = userInfo["URL"] as? String
+//                let profileImageURL = notification.userInfoImageURL,
+//                       let url = profileImageURL as? String
+        else { return }
 
-    
-    
+        print("profileImageURL", profileImageURL)
+        
+        let processor = RoundCornerImageProcessor(cornerRadius: 61)
+        avatarImage.kf.indicatorType = .activity
+        avatarImage.kf.setImage(with: profileImageURL, options: [.processor(processor)])
+    }                                  // 8
+            
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         guard let profile = ProfileService.shared.profile else {
             assertionFailure("No saved profile")
-            return }
+            return
+        }
         
-        //        self.textStack.nameLabel.text = profile.name
-        //        self.textStack.descriptionLabel.text = profile.bio
-        //        self.textStack.loginNameLabel.text = profile.loginName
+        nameLabel.text = profile.name
+        descriptionLabel.text = profile.bio
+        loginNameLabel.text = profile.loginName
         
         profileImageService.fetchProfileImageURL(userName: profile.username) { _ in
             //no completion???
@@ -117,7 +117,7 @@ final class ProfileViewController: UIViewController {
         ])
     }
     
-    private func createLabel(size: CGFloat, weight: UIFont.Weight, text: String, color: UIColor) -> UILabel{
+    private func createLabel(size: CGFloat, weight: UIFont.Weight, text: String, color: UIColor) -> UILabel {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = text
@@ -129,9 +129,9 @@ final class ProfileViewController: UIViewController {
     
     private func setText() {
         view.addSubview(textStack)
-        let nameLabel = createLabel(size: 23, weight: .bold, text: "\\name", color: .ypWhite)
-        let loginNameLabel = createLabel(size: 13, weight: .regular, text: "@\\login", color: .ypGray)
-        let descriptionLabel = createLabel(size: 13, weight: .regular, text: "\\description", color: .ypWhite)
+//        let nameLabel = createLabel(size: 23, weight: .bold, text: "\\name", color: .ypWhite)
+//        let loginNameLabel = createLabel(size: 13, weight: .regular, text: "@\\login", color: .ypGray)
+//        let descriptionLabel = createLabel(size: 13, weight: .regular, text: "\\description", color: .ypWhite)
         textStack.addArrangedSubview(nameLabel)
         textStack.addArrangedSubview(loginNameLabel)
         textStack.addArrangedSubview(descriptionLabel)
@@ -154,6 +154,8 @@ final class ProfileViewController: UIViewController {
     @objc
     private func didTapButton() {
         print("logout")
+        
+        OAuth2TokenStorage.shared.token = nil
     }
 }
 
