@@ -8,7 +8,7 @@ final class ProfileImageService {
     private (set) var avatarURL: URL?
     private let builder: URLRequestBuilder
     
-    init(builder: URLRequestBuilder = .shared){
+    private init(builder: URLRequestBuilder = .shared){
         self.builder = builder
     }
     
@@ -41,10 +41,13 @@ final class ProfileImageService {
     }
     
     func makeImageRequest (userName: String) -> URLRequest? {
-        builder.makeHTTPRequest(
+        guard let url = URL(string: Constants.defaultBaseURL) else {
+            return nil
+        }
+        return builder.makeHTTPRequest(
             path: "/users/\(userName)",
             httpMethod: "GET",
-            baseURL: URL(string: Constants.defaultBaseURL)!
+            baseURL: url
         )
     }
 }

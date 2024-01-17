@@ -3,7 +3,7 @@ import UIKit
 final class SplashViewController: UIViewController {
     
     //MARK: - Private Properties
-    private let ShowAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
+    private let showAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
     private let oauth2Service = OAuth2Service()
     private var alertPresenter = AlertPresenter()
     private let profileService = ProfileService.shared
@@ -38,6 +38,7 @@ final class SplashViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        guard UIBlockingProgressHUD.isShowing == false else { return }
         checkAuthStatus()
     }
     
@@ -51,12 +52,12 @@ final class SplashViewController: UIViewController {
     }
     
     private func checkAuthStatus() {
-        
         if  oauth2Service.isAuthenticated {
             UIBlockingProgressHUD.show()
             fetchProfile { [weak self] in
                 UIBlockingProgressHUD.dismiss()
                 self?.switchToTabBarController()
+                
             }
         } else {
             showAuthController()
@@ -83,11 +84,11 @@ final class SplashViewController: UIViewController {
 //MARK: - Extensions
 extension SplashViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == ShowAuthenticationScreenSegueIdentifier {
+        if segue.identifier == showAuthenticationScreenSegueIdentifier {
             guard
                 let navigationController = segue.destination as? UINavigationController,
                 let viewController = navigationController.viewControllers[0] as? AuthViewController
-            else { fatalError("Failed to prepare for \(ShowAuthenticationScreenSegueIdentifier)") }
+            else { fatalError("Failed to prepare for \(showAuthenticationScreenSegueIdentifier)") }
             viewController.delegate = self
         } else {
             super.prepare(for: segue, sender: sender)
@@ -97,8 +98,6 @@ extension SplashViewController {
 //MARK: - AuthViewControllerDelegate
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
-        UIBlockingProgressHUD.show()
-        
         dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
             self.fetchOAuthToken(code)
@@ -135,8 +134,10 @@ extension SplashViewController: AuthViewControllerDelegate {
     
     private func showLoginAlert(error: Error) {
         alertPresenter.showAlert(title: "Что-то пошло не так :(",
-                                 message: "Не удалось войти в систему, \(error.localizedDescription)") {
-            self.performSegue(withIdentifier: self.ShowAuthenticationScreenSegueIdentifier, sender: nil)
+                                 message: "Не удалось войти в систему, \(error.localizedDescription)") {[weak self] in
+            guard let self = self else { return }
+            
+            self.performSegue(withIdentifier: self.showAuthenticationScreenSegueIdentifier, sender: nil)
         }
     }
     

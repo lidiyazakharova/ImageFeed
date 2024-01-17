@@ -6,7 +6,7 @@ final class ProfileService {
     private var currentTask: URLSessionTask?
     private let builder: URLRequestBuilder
     
-    init(builder: URLRequestBuilder = .shared){
+    private init(builder: URLRequestBuilder = .shared){
         self.builder = builder
     }
     
@@ -35,11 +35,15 @@ final class ProfileService {
     }
     
     func makeFetchProfileRequest () -> URLRequest? {
-        builder.makeHTTPRequest(
+        guard let url = URL(string: Constants.defaultBaseURL) else {
+            return nil
+        }
+        
+        return builder.makeHTTPRequest(
             path: "/me",
             httpMethod: "GET",
-            baseURL: URL(string: Constants.defaultBaseURL)!
-        )        
+            baseURL: url
+        )
     }
 }
 

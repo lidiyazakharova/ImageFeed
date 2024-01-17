@@ -19,6 +19,7 @@ final class WebViewViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        progressView.progress = 0.0
         webView.navigationDelegate = self
         loadWebView()
         estimatedProgressObservation = webView.observe(
@@ -35,7 +36,7 @@ final class WebViewViewController: UIViewController {
     }
     
     private func updateProgress() {
-        progressView.progress = Float(webView.estimatedProgress)
+        progressView.setProgress(Float(webView.estimatedProgress), animated: true)
         progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
     }
 }
@@ -69,14 +70,18 @@ extension WebViewViewController: WKNavigationDelegate {
     }
     
     private func loadWebView(){
-        var urlComponents = URLComponents(string: Constants.unsplashAuthorizeURL)!
+        guard
+            var urlComponents = URLComponents(string: Constants.unsplashAuthorizeURL)
+        else { return }
+        
         urlComponents.queryItems = [
             URLQueryItem(name: "client_id", value: Constants.accessKey),
             URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
             URLQueryItem(name: "response_type", value: "code"),
             URLQueryItem(name: "scope", value: Constants.accessScope)
         ]
-        let url = urlComponents.url!
+        guard
+            let url = urlComponents.url else { return }
         let request = URLRequest(url: url)
         webView.load(request)
     }

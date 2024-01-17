@@ -7,6 +7,7 @@ final class OAuth2Service {
     private let builder: URLRequestBuilder
     private var lastCode: String?
     private var currentTask: URLSessionTask?
+    var isAuthenticated: Bool { storage.token != nil }
     
     init(
         urlSession: URLSession = .shared,
@@ -17,8 +18,7 @@ final class OAuth2Service {
         self.storage = storage
         self.builder = builder
     }
-    
-    var isAuthenticated: Bool { storage.token != nil }
+
     
     func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
@@ -51,7 +51,11 @@ final class OAuth2Service {
 
 extension OAuth2Service {
     private func authTokenRequest(code: String) -> URLRequest? {
-        builder.makeHTTPRequest(
+        guard let url = URL(string: Constants.baseURL) else {
+            return nil
+        }
+        
+        return builder.makeHTTPRequest(
             path: "\(Constants.baseAuthTokenPath)"
             + "?client_id=\(Constants.accessKey)"
             + "&&client_secret=\(Constants.secretKey)"
@@ -59,7 +63,7 @@ extension OAuth2Service {
             + "&&code=\(code)"
             + "&&grant_type=authorization_code",
             httpMethod: "POST",
-            baseURL: URL(string: Constants.baseURL)!
+            baseURL: url
         )
     }
 }
