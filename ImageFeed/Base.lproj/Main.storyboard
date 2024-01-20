@@ -190,7 +190,6 @@
         <!--Tab Bar Controller-->
         <scene sceneID="Qce-ZE-cdO">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="4RI-jd-EXN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <tabBarController storyboardIdentifier="TabBarViewController" id="fkr-EY-NAs" customClass="TabBarController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="OTK-sZ-FAv">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
@@ -203,6 +202,7 @@
                         </tabBarAppearance>
                     </tabBar>
                 </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4RI-jd-EXN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2532" y="80"/>
         </scene>

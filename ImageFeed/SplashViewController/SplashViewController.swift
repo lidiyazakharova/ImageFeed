@@ -8,6 +8,7 @@ final class SplashViewController: UIViewController {
     private var alertPresenter = AlertPresenter()
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
+    private var authIsChecked: Bool = false
     
     private lazy var splashScreenImage: UIImageView = {
         let splashScreenImage = UIImageView()
@@ -38,8 +39,13 @@ final class SplashViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
         guard UIBlockingProgressHUD.isShowing == false else { return }
-        checkAuthStatus()
+        
+        if !authIsChecked {
+            checkAuthStatus()
+            authIsChecked = true
+        }
     }
     
     //MARK: - Private Functions
@@ -133,10 +139,12 @@ extension SplashViewController: AuthViewControllerDelegate {
     }
     
     private func showLoginAlert(error: Error) {
+        print("We are here")
+        
         alertPresenter.showAlert(title: "Что-то пошло не так :(",
                                  message: "Не удалось войти в систему, \(error.localizedDescription)") { [weak self] in
             guard let self = self else { return }
-            self.performSegue(withIdentifier: self.showAuthenticationScreenSegueIdentifier, sender: nil)
+            self.showAuthController()
             
         }
     }
