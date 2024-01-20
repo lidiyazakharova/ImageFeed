@@ -134,10 +134,10 @@ extension SplashViewController: AuthViewControllerDelegate {
     
     private func showLoginAlert(error: Error) {
         alertPresenter.showAlert(title: "Что-то пошло не так :(",
-                                 message: "Не удалось войти в систему, \(error.localizedDescription)") {[weak self] in
+                                 message: "Не удалось войти в систему, \(error.localizedDescription)") { [weak self] in
             guard let self = self else { return }
-            
             self.performSegue(withIdentifier: self.showAuthenticationScreenSegueIdentifier, sender: nil)
+            
         }
     }
     

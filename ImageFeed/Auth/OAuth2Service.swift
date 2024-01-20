@@ -54,7 +54,6 @@ extension OAuth2Service {
         guard let url = URL(string: Constants.baseURL) else {
             return nil
         }
-        
         return builder.makeHTTPRequest(
             path: "\(Constants.baseAuthTokenPath)"
             + "?client_id=\(Constants.accessKey)"
