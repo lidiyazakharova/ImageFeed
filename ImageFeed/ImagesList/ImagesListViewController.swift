@@ -19,27 +19,6 @@ final class ImagesListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
-        
-//        profileImageServiceObserver = NotificationCenter.default.addObserver(
-//            forName: ProfileImageService.didChangeNotification,
-//            object: nil,
-//            queue: .main
-//        ) { [weak self] _ in
-//            guard let self = self else { return }
-//            self.updateAvatar()
-//        }
-//        updateAvatar()
-//    }
-//
-//    private func updateAvatar() {
-//        guard let profileImageURL = ProfileImageService.shared.avatarURL
-//        else { return }
-//
-//        let processor = RoundCornerImageProcessor(cornerRadius: 50)
-//        avatarImage.kf.indicatorType = .activity
-//        avatarImage.kf.setImage(with: profileImageURL, options: [.processor(processor)])
-//    }
-        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -57,6 +36,7 @@ final class ImagesListViewController: UIViewController {
 extension ImagesListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        return ImagesListService.shared.photos.count
         return photosName.count
     }
     
@@ -64,18 +44,12 @@ extension ImagesListViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(
             withIdentifier: ImagesListCell.reuseIdentifier,
             for: indexPath)
-    
+        
         guard let imageListCell = cell as? ImagesListCell else {
             return UITableViewCell()
         }
         
         configCell(for: imageListCell, with: indexPath)
-       // imageListCell.fetchPhotosNextPage(userName: user, completion: <#T##(Result<Photo, Error>) -> Void#>)
-        // добавить проверку на current task
-        
-//        Метод tableView(_:, willDisplay:, forRowAt:) вызывается прямо перед тем, как ячейка таблицы будет показана на экране. В этом методе можно проверить условие indexPath.row + 1 == photos.count, и если оно верно — вызывать fetchPhotosNextPage().
-//        Отметим, что этот метод может вызываться для одной и той же ячейки множество раз (иногда десятки раз). Поэтому нужно сделать так, чтобы многократные вызовы fetchPhotosNextPage() были «дешёвыми» по ресурсам и не приводили к прерыванию текущего сетевого запроса.
-        
         return imageListCell
     }
 }
@@ -101,26 +75,59 @@ extension ImagesListViewController: UITableViewDelegate {
         print("Row index \(indexPath)")
         
         if indexPath.row + 1 == imageListService.photos.count || imageListService.photos.count == 0 {
-            imageListService.fetchPhotosNextPage() { result in
-                print("Result success or nor hz")
-            }
+            imageListService.fetchPhotosNextPage() { result in }
         }
     }
 }
 
 extension ImagesListViewController {
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        guard let image = UIImage(named: photosName[indexPath.row]) else {
-            return
-        }
+        guard indexPath.row < ImagesListService.shared.photos.count else { return }
         
-        cell.cellImage.image = image
-        cell.dateLabel.text = dateFormatter.string(from: Date())
+        let photo = ImagesListService.shared.photos[indexPath.row]
+        let imageUrl = URL(string: photo.thumbImageURL)
+        
+        cell.cellImage.kf.indicatorType = .activity
+        cell.cellImage.kf.setImage(
+            with: imageUrl,
+            completionHandler: { result in
+                self.tableView.reloadRows(at: [indexPath], with: .automatic)
+            }
+        )
+        cell.dateLabel.text = dateFormatter.string(from: photo.createdAt!)
         cell.gradient.layer.cornerRadius = 16
         cell.gradient.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
         
-        let isLiked = indexPath.row % 2 == 0
-        let likeImage = isLiked ? UIImage(named: "likeActive") : UIImage(named: "likeNoActive")
+        let likeImage = photo.isLiked ? UIImage(named: "likeActive") : UIImage(named: "likeNoActive")
         cell.likeButton.setImage(likeImage, for: .normal)
+        
+//        guard let image = UIImage(named: photosName[indexPath.row]) else {
+//            return
+//        }
+//
+//        cell.cellImage.image = image
+//        cell.dateLabel.text = dateFormatter.string(from: Date())
+//        cell.gradient.layer.cornerRadius = 16
+//        cell.gradient.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+//
+//        let isLiked = indexPath.row % 2 == 0
+//        let likeImage = isLiked ? UIImage(named: "likeActive") : UIImage(named: "likeNoActive")
+//        cell.likeButton.setImage(likeImage, for: .normal)
     }
 }
+
+//private func updateCellImage() {
+//    guard let cellImageURL = ImagesListService.shared.photos.photo.thumbImageURL
+//    else {return}
+//
+//    cellImageURL.kf.indicatorType = .activity
+//    cellImageURL.kf.setImage(with: thumbImageURL)
+//}
+//    private func updateAvatar() {
+//        guard let profileImageURL = ProfileImageService.shared.avatarURL
+//        else { return }
+//
+//        let processor = RoundCornerImageProcessor(cornerRadius: 50)
+//        avatarImage.kf.indicatorType = .activity
+//        avatarImage.kf.setImage(with: profileImageURL, options: [.processor(processor)])
+//    }

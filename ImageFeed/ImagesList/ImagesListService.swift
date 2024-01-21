@@ -35,6 +35,8 @@ final class ImagesListService {
             case .success(let result):
                 print("Result success")
                 
+                self?.lastLoadedPage = self?.nextPage
+                
                 var newPhotos: [Photo] = []
                 result.forEach { photoResult in
                     newPhotos.append(Photo(result: photoResult))
