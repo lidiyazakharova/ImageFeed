@@ -1,10 +1,16 @@
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
+    //MARK: - Private Properties
+    private let profileImageService = ProfileImageService.shared
+    private let profileService = ProfileService.shared
+    private var profileImageServiceObserver: NSObjectProtocol?
+    
     private lazy var avatarImage: UIImageView = {
         let avatarImage = UIImageView()
-        avatarImage.image = UIImage(named: "userPhoto")
+        avatarImage.image = UIImage(named: "userPick")
         avatarImage.contentMode = .scaleToFill
         avatarImage.translatesAutoresizingMaskIntoConstraints = false
         avatarImage.heightAnchor.constraint(equalToConstant: 70).isActive = true
@@ -34,17 +40,66 @@ final class ProfileViewController: UIViewController {
         return logoutButton
     }()
     
+    private lazy var nameLabel: UILabel = {
+        createLabel(size: 23, weight: .bold, text: "Name", color: .ypWhite)
+    }()
+    
+    private lazy var loginNameLabel: UILabel = {
+        createLabel(size: 13, weight: .regular, text: "login", color: .ypGray)
+    }()
+    
+    private lazy var descriptionLabel: UILabel = {
+        createLabel(size: 13, weight: .regular, text: "Description", color: .ypWhite)
+    }()
+    
+    //MARK: - UIViewController
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return.lightContent
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .ypBlack
         setImage()
         setText()
         setButton()
+        
+        profileImageServiceObserver = NotificationCenter.default.addObserver(
+            forName: ProfileImageService.didChangeNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            guard let self = self else { return }
+            self.updateAvatar()
+        }
+        updateAvatar()
     }
     
+    private func updateAvatar() {
+        guard let profileImageURL = ProfileImageService.shared.avatarURL
+        else { return }
+        
+        let processor = RoundCornerImageProcessor(cornerRadius: 50)
+        avatarImage.kf.indicatorType = .activity
+        avatarImage.kf.setImage(with: profileImageURL, options: [.processor(processor)])
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        guard let profile = ProfileService.shared.profile else {
+            assertionFailure("No saved profile")
+            return
+        }
+        
+        nameLabel.text = profile.name
+        descriptionLabel.text = profile.bio
+        loginNameLabel.text = profile.loginName
+        
+        profileImageService.fetchProfileImageURL(userName: profile.username) { _ in
+        }
+    }
+    
+    //MARK: - Private Functions
     private func setImage () {
         view.addSubview(avatarImage)
         NSLayoutConstraint.activate([
@@ -53,7 +108,7 @@ final class ProfileViewController: UIViewController {
         ])
     }
     
-    private func createLabel(size: CGFloat, weight: UIFont.Weight, text: String, color: UIColor) -> UILabel{
+    private func createLabel(size: CGFloat, weight: UIFont.Weight, text: String, color: UIColor) -> UILabel {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = text
@@ -65,9 +120,6 @@ final class ProfileViewController: UIViewController {
     
     private func setText() {
         view.addSubview(textStack)
-        let nameLabel = createLabel(size: 23, weight: .bold, text: "Екатерина Новикова", color: .ypWhite)
-        let loginNameLabel = createLabel(size: 13, weight: .regular, text: "@ekaterina_nov", color: .ypGray)
-        let descriptionLabel = createLabel(size: 13, weight: .regular, text: "Hello, world!", color: .ypWhite)
         textStack.addArrangedSubview(nameLabel)
         textStack.addArrangedSubview(loginNameLabel)
         textStack.addArrangedSubview(descriptionLabel)
@@ -90,6 +142,13 @@ final class ProfileViewController: UIViewController {
     @objc
     private func didTapButton() {
         print("logout")
+        OAuth2TokenStorage.shared.token = nil
     }
 }
 
+extension Notification {
+    static let userInfoImageURLKey: String = "URL"
+    var userInfoImageURL: String? {
+        userInfo?[Notification.userInfoImageURLKey] as? String
+    }
+}
