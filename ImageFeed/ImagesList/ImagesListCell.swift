@@ -9,4 +9,3 @@ final class ImagesListCell: UITableViewCell {
     @IBOutlet var gradient: GradientView!
     
 }
-
