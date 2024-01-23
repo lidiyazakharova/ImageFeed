@@ -1,12 +1,30 @@
 import UIKit
+import Kingfisher
 
 final class SingleImageViewController: UIViewController {
     
-    var image: UIImage! {
+//    var image: UIImage! {
+//        didSet {
+//            guard isViewLoaded else { return }
+//            imageView.image = image
+//            rescaleAndCenterImageInScrollView(image: image)
+//        }
+//    }
+    
+    var photo: Photo! {
         didSet {
             guard isViewLoaded else { return }
-            imageView.image = image
-            rescaleAndCenterImageInScrollView(image: image)
+            let imageUrl = URL(string: photo.largeImageURL)
+            
+            imageView.kf.indicatorType = .activity
+            imageView.kf.setImage(
+                with: imageUrl,
+                completionHandler: { result in
+                    guard let image = self.imageView.image else { return }
+                    
+                    self.rescaleAndCenterImageInScrollView(image: image)
+                }
+            )
         }
     }
     
@@ -20,10 +38,24 @@ final class SingleImageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        imageView.image = image
-        scrollView.minimumZoomScale = 0.1
-        scrollView.maximumZoomScale = 1.25
-        rescaleAndCenterImageInScrollView(image: image)        
+//        imageView.image = image
+//        scrollView.minimumZoomScale = 0.1
+//        scrollView.maximumZoomScale = 1.25
+//        rescaleAndCenterImageInScrollView(image: image)
+        
+        let imageUrl = URL(string: photo.largeImageURL)
+        
+        imageView.kf.indicatorType = .activity
+        imageView.kf.setImage(
+            with: imageUrl,
+            completionHandler: { result in
+                guard let image = self.imageView.image else { return }
+                
+                self.scrollView.minimumZoomScale = 0.1
+                self.scrollView.maximumZoomScale = 1.25
+                self.rescaleAndCenterImageInScrollView(image: image)
+            }
+        )
     }
     
     @IBAction private func didTapBackButton() {
@@ -31,6 +63,8 @@ final class SingleImageViewController: UIViewController {
     }
     
     @IBAction func didTapShareButton(_ sender: UIButton) {
+        guard let image = imageView.image else { return }
+        
         let share = UIActivityViewController(
             activityItems: [image],
             applicationActivities: nil

@@ -9,6 +9,7 @@ final class ImagesListService {
     private var lastLoadedPage: Int?
     private var nextPage: Int = 0
     private var currentTask: URLSessionTask?
+    private let perPage = 10
     
     private init(builder: URLRequestBuilder = .shared){
         self.builder = builder
@@ -29,16 +30,15 @@ final class ImagesListService {
         
         let session = URLSession.shared
         currentTask = session.objectTask(for: request) {
-            [weak self] (response: Result<[PhotoResult], Error>) in
+            [weak self] (result: Result<[PhotoResult], Error>) in
             self?.currentTask = nil
-            switch response {
-            case .success(let result):
+            switch result {
+            case .success(let photoResult):
                 print("Result success")
-                
                 self?.lastLoadedPage = self?.nextPage
                 
                 var newPhotos: [Photo] = []
-                result.forEach { photoResult in
+                photoResult.forEach { photoResult in
                     newPhotos.append(Photo(result: photoResult))
                 }
                 self?.photos.append(contentsOf: newPhotos)
@@ -55,6 +55,7 @@ final class ImagesListService {
                 
                 completion(.failure(error))
             }
+            print( self?.photos.count)
         }
     }
     
@@ -63,7 +64,7 @@ final class ImagesListService {
             return nil
         }
         return builder.makeHTTPRequest(
-            path: "/photos?page=\(self.nextPage)&per_page=10",
+            path: "/photos?page=\(self.nextPage)&per_page=1\(perPage)",
             httpMethod: "GET",
             baseURL: url
         )
