@@ -1,5 +1,4 @@
 import UIKit
-//Link: <https://api.unsplash.com/photos?page=1>; rel="first", <https://api.unsplash.com/photos?page=1>; rel="prev", <https://api.unsplash.com/photos?page=346>; rel="last", <https://api.unsplash.com/photos?page=3>; rel="next"
 
 struct SinglePhotoResult: Codable {
     let photo: PhotoResult
@@ -11,7 +10,7 @@ struct PhotoResult: Codable {
     let height: Int
     let createdAt: String?
     let description: String?
-    let likedByUser: Bool //"liked_by_user"
+    let likedByUser: Bool
     let urls: UrlsResult?
 }
 
@@ -27,12 +26,11 @@ struct Photo {
     let id: String
     let size: CGSize
     let createdAt: Date?
-    let welcomeDescription: String?// "description"
+    let welcomeDescription: String?
     let thumbImageURL: String
     let largeImageURL: String
-    let isLiked: Bool //"liked_by_user"
+    let isLiked: Bool
 }
-
 
 extension Photo {
     init(result photo: PhotoResult) {
@@ -47,5 +45,3 @@ extension Photo {
         )
     }
 }
-    
-//При декодинге ответа с сервера нужно связать поле isLiked модели с полем liked_by_user ответа сервера.

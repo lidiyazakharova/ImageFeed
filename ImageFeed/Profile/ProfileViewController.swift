@@ -7,7 +7,6 @@ final class ProfileViewController: UIViewController {
     //MARK: - Private Properties
     private let profileImageService = ProfileImageService.shared
     private let profileService = ProfileService.shared
-//    private let splashViewController = SplashViewController.shared
     private var profileImageServiceObserver: NSObjectProtocol?
     private let alertPresenter = AlertPresenter()
     
@@ -63,7 +62,6 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         alertPresenter.delegate = self
-        
         view.backgroundColor = .ypBlack
         setImage()
         setText()
@@ -149,23 +147,15 @@ final class ProfileViewController: UIViewController {
         alertPresenter.showConfirmLogoutAlert(
             yesHandler: {
                 OAuth2TokenStorage.shared.token = nil
-                // Очищаем все куки из хранилища.
                 HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
-                // Запрашиваем все данные из локального хранилища.
                 WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
-                    // Массив полученных записей удаляем из хранилища.
                     records.forEach { record in
                         WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
                     }
                 }
-                
                 self.switchToSplashViewController()
             }
         )
-        
-        
-//        showAuthController()// После выполнения логаута нужно перейти на начальный экран приложения, так как без авторизационных данных невозможно выполнить запросы API.
-//        rootViewController заменяется на SplashViewController (выполняется по аналогии со switchToTabBarController, только нужно перейти не на TabBarController, а на SplashViewController).
     }
     
     private func switchToSplashViewController() {
@@ -175,6 +165,7 @@ final class ProfileViewController: UIViewController {
     }
 }
 
+//MARK: - Extension
 extension Notification {
     static let userInfoImageURLKey: String = "URL"
     var userInfoImageURL: String? {

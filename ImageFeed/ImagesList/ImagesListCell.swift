@@ -7,12 +7,10 @@ protocol ImagesListCellDelegate: AnyObject {
 final class ImagesListCell: UITableViewCell {
     
     static let reuseIdentifier = "ImagesListCell"
-    
     @IBOutlet var cellImage: UIImageView!
     @IBOutlet var dateLabel: UILabel!
     @IBOutlet var likeButton: UIButton!
     @IBOutlet var gradient: GradientView!
-    
     weak var delegate: ImagesListCellDelegate? 
  
     @IBAction private func likeButtonClicked(_ sender: Any) {
