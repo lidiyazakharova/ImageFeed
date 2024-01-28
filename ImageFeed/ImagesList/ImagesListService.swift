@@ -5,10 +5,11 @@ final class ImagesListService {
     static let shared = ImagesListService()
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     private let builder: URLRequestBuilder
-    private (set) var photos: [Photo] = []
+    var photos: [Photo] = []
     private var lastLoadedPage: Int?
     private var nextPage: Int = 0
     private var currentTask: URLSessionTask?
+    private var changeLikeTask: URLSessionTask?
     private let perPage = 10
     
     private init(builder: URLRequestBuilder = .shared){
@@ -34,7 +35,7 @@ final class ImagesListService {
             self?.currentTask = nil
             switch result {
             case .success(let photoResult):
-                print("Result success")
+//                print("Result success")
                 self?.lastLoadedPage = self?.nextPage
                 
                 var newPhotos: [Photo] = []
@@ -51,11 +52,11 @@ final class ImagesListService {
                 )
                 
             case .failure(let error):
-                print("Result failed \(error)")
+                print("Result failed \(error)")// убрать ошибку
                 
                 completion(.failure(error))
             }
-            print( self?.photos.count)
+//            print(self?.photos.count)
         }
     }
     
@@ -69,59 +70,94 @@ final class ImagesListService {
             baseURL: url
         )
     }
+  
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
+        print("Change like")
+        
+        var request: URLRequest?
+        if isLike {
+            request = makeLikeRequest(photoId: photoId)
+        } else {
+            request = makeDeleteLikeRequest(photoId: photoId)
+        }
+        
+        guard let request = request else {
+            assertionFailure("Invalid request")
+            completion(.failure(NetworkError.invalidRequest))
+            return
+        }
+        
+        let session = URLSession.shared
+        changeLikeTask = session.objectTask(for: request) {
+            (result: Result<SinglePhotoResult, Error>) in
+            
+            switch result {
+            case .success:
+                print("Like success")
+                completion(.success(Void()))
+                
+            case .failure(let error):
+                print("Result failed \(error)")// убрать ошибку
+                
+                completion(.failure(error))
+            }
+        }
+        
+        // Поиск индекса элемента
+//        if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
+            // Текущий элемент
+//           let photo = self.photos[index]
+           // Копия элемента с инвертированным значением isLiked.
+//           let newPhoto = Photo(
+//                    id: photo.id,
+//                    size: photo.size,
+//                    createdAt: photo.createdAt,
+//                    welcomeDescription: photo.welcomeDescription,
+//                    thumbImageURL: photo.thumbImageURL,
+//                    largeImageURL: photo.largeImageURL,
+//                    isLiked: !photo.isLiked
+//                )
+            // Заменяем элемент в массиве.
+//            self.photos = self.photos.withReplaced(itemAt: index, newValue: newPhoto)
+//        }
+    }
     
+    private func makeLikeRequest(photoId: String) -> URLRequest? {
+        guard let url = URL(string: Constants.defaultBaseURL) else {
+            return nil
+        }
+        
+        return builder.makeHTTPRequest(
+            path: "/photos/\(photoId)/like",
+            httpMethod: "POST",
+            baseURL: url
+        )
+    }
+    
+    private func makeDeleteLikeRequest(photoId: String) -> URLRequest? {
+        guard let url = URL(string: Constants.defaultBaseURL) else {
+            return nil
+        }
+        
+        return builder.makeHTTPRequest(
+            path: "/photos/\(photoId)/like",
+            httpMethod: "DELETE",
+            baseURL: url
+        )
+    }
 }
 
 
 
-func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {}
 
 
-//// Поиск индекса элемента
-//if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
-//    // Текущий элемент
-//   let photo = self.photos[index]
-//   // Копия элемента с инвертированным значением isLiked.
-//   let newPhoto = Photo(
-//            id: photo.id,
-//            size: photo.size,
-//            createdAt: photo.createdAt,
-//            welcomeDescription: photo.welcomeDescription,
-//            thumbImageURL: photo.thumbImageURL,
-//            largeImageURL: photo.largeImageURL,
-//            isLiked: !photo.isLiked
-//        )
-//    // Заменяем элемент в массиве.
-//    self.photos = self.photos.withReplaced(itemAt: index, newValue: newPhoto)
-//}
 
-//extension ImagesListViewController: ImagesListCellDelegate {
-//
-//    func imageListCellDidTapLike(_ cell: ImagesListCell) {
-//
-//      guard let indexPath = tableView.indexPath(for: cell) else { return }
-//      let photo = photos[indexPath.row]
-//      // Покажем лоадер
-//     UIBlockingProgressHUD.show()
-//     imagesListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { result in
-//        switch result {
-//        case .success:
-//           // Синхронизируем массив картинок с сервисом
-//           self.photos = self.imagesListService.photos
-//           // Изменим индикацию лайка картинки
-//           сell.setIsLiked(self.photos[indexPath.row].isLiked)
-//           // Уберём лоадер
-//           UIBlockingProgressHUD.dismiss()
-//        case .failure:
-//           // Уберём лоадер
-//           UIBlockingProgressHUD.dismiss()
-//           // Покажем, что что-то пошло не так
-//           // TODO: Показать ошибку с использованием UIAlertController
-//           }
-//        }
-//    }
-//
-//}
+
+
+
+
+
+
 
 
 //
@@ -152,49 +188,3 @@ func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<V
 
 
 
-//func requestNextQuestion() {
-//    DispatchQueue.global().async { [weak self] in
-//        guard let self = self else { return }
-//        let index = (0..<self.movies.count).randomElement() ?? 0
-//
-//        guard let movie = self.movies[safe: index] else { return }
-//
-//        var imageData = Data()
-//
-//        do {
-//            imageData = try Data(contentsOf: movie.resizedImageURL)
-//        } catch {
-//            print("Failed to load image")
-//        }
-//
-//        let rating = Float(movie.rating) ?? 0
-//        let ratingToCompare = (7...9).randomElement() ?? 9
-//        let text = "Рейтинг этого фильма больше чем \(ratingToCompare)?"
-//        let correctAnswer = rating > Float(ratingToCompare)
-//
-//        let question = QuizQuestion(image: imageData,
-//                                    text: text,
-//                                    correctAnswer: correctAnswer)
-//
-//        DispatchQueue.main.async { [weak self] in
-//            guard let self = self else { return }
-//            self.delegate?.didReceiveNextQuestion(question)
-//        }
-//    }
-//}
-//
-//func loadData() {
-//    moviesLoader.loadMovies { [weak self] result in
-//
-//        DispatchQueue.main.async {
-//            guard let self = self else { return }
-//            switch result {
-//            case .success(let mostPopularMovies):
-//                self.movies = mostPopularMovies.items
-//                self.delegate?.didLoadDataFromServer()
-//            case .failure(let error):
-//                self.delegate?.didFailToLoadData(with: error)
-//            }
-//        }
-//    }
-//}

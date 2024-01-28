@@ -1,11 +1,13 @@
 import UIKit
 import Kingfisher
+import WebKit
 
 final class ProfileViewController: UIViewController {
     
     //MARK: - Private Properties
     private let profileImageService = ProfileImageService.shared
     private let profileService = ProfileService.shared
+//    private let splashViewController = SplashViewController.shared
     private var profileImageServiceObserver: NSObjectProtocol?
     
     private lazy var avatarImage: UIImageView = {
@@ -142,7 +144,19 @@ final class ProfileViewController: UIViewController {
     @objc
     private func didTapButton() {
         print("logout")
+        
         OAuth2TokenStorage.shared.token = nil
+        // Очищаем все куки из хранилища.
+        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+        // Запрашиваем все данные из локального хранилища.
+        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+            // Массив полученных записей удаляем из хранилища.
+            records.forEach { record in
+                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
+            }
+        }
+//        showAuthController()// После выполнения логаута нужно перейти на начальный экран приложения, так как без авторизационных данных невозможно выполнить запросы API.
+//        rootViewController заменяется на SplashViewController (выполняется по аналогии со switchToTabBarController, только нужно перейти не на TabBarController, а на SplashViewController).
     }
 }
 

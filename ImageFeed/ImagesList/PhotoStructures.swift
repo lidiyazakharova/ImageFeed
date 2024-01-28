@@ -1,6 +1,10 @@
 import UIKit
 //Link: <https://api.unsplash.com/photos?page=1>; rel="first", <https://api.unsplash.com/photos?page=1>; rel="prev", <https://api.unsplash.com/photos?page=346>; rel="last", <https://api.unsplash.com/photos?page=3>; rel="next"
 
+struct SinglePhotoResult: Codable {
+    let photo: PhotoResult
+}
+
 struct PhotoResult: Codable {
     let id: String
     let width: Int
