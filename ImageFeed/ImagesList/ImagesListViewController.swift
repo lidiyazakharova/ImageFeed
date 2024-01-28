@@ -41,7 +41,6 @@ final class ImagesListViewController: UIViewController {
             guard let self = self else { return }
             self.updateTableViewAnimated()
         }
-        updateTableViewAnimated()
     }
 //    private func updateTableViewAnimated() {
 //        tableView.reloadData()
@@ -141,6 +140,7 @@ extension ImagesListViewController {
         cell.cellImage.kf.indicatorType = .activity
         cell.cellImage.kf.setImage(
             with: imageUrl,
+            placeholder: UIImage(named: "stub_card"),
             completionHandler: { result in
                 self.tableView.reloadRows(at: [indexPath], with: .automatic)
             }
@@ -179,13 +179,11 @@ extension ImagesListViewController: ImagesListCellDelegate {
         imagesListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { result in
             switch result {
             case .success:
-                // Синхронизируем массив картинок с сервисом
-                self.photos = self.imagesListService.photos
-                
                 let newPhoto = Photo(id: photo.id, size: photo.size, createdAt: photo.createdAt, welcomeDescription: photo.welcomeDescription, thumbImageURL: photo.thumbImageURL, largeImageURL: photo.largeImageURL, isLiked: !photo.isLiked)
                 
-                self.photos[indexPath.row] = newPhoto
                 self.imagesListService.photos[indexPath.row] = newPhoto
+                // Синхронизируем массив картинок с сервисом
+                self.photos = self.imagesListService.photos
                 // Изменим индикацию лайка картинки
                 cell.setIsLiked(self.photos[indexPath.row].isLiked)
                 // Уберём лоадер
@@ -201,11 +199,7 @@ extension ImagesListViewController: ImagesListCellDelegate {
     }
     private func showLikeAlert(error: Error) {
         alertPresenter.showAlert(title: "Что-то пошло не так :(",
-                                 message: "Не удалось сохранить like, \(error.localizedDescription)") { [weak self] in
-            guard let self = self else { return }
-            self.updateTableViewAnimated()// Что передавать?
-            
-        }
+                                 message: "Не удалось сохранить like, \(error.localizedDescription)") {}
     }
 }
 
