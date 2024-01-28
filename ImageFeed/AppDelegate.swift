@@ -10,8 +10,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
 //        print("1")
         ProgressHUD.animationType = .systemActivityIndicator
-        ProgressHUD.colorHUD = .black
-        ProgressHUD.colorAnimation = .lightGray
+        ProgressHUD.colorHUD = .ypWhite
+        ProgressHUD.colorAnimation = .ypBlack
         return true
     }
 
