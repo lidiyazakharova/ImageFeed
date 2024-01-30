@@ -2,12 +2,13 @@ import Foundation
 
 final class OAuth2Service {
     
+    var isAuthenticated: Bool { storage.token != nil }
     private let urlSession: URLSession
     private let storage: OAuth2TokenStorage
     private let builder: URLRequestBuilder
     private var lastCode: String?
     private var currentTask: URLSessionTask?
-    var isAuthenticated: Bool { storage.token != nil }
+  
     
     init(
         urlSession: URLSession = .shared,

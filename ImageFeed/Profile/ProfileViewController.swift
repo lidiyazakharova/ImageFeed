@@ -145,7 +145,7 @@ final class ProfileViewController: UIViewController {
     @objc
     private func didTapButton() {
         alertPresenter.showConfirmLogoutAlert(
-            yesHandler: {
+            yesHandler: { [weak self] in
                 OAuth2TokenStorage.shared.token = nil
                 HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
                 WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
@@ -153,7 +153,7 @@ final class ProfileViewController: UIViewController {
                         WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
                     }
                 }
-                self.switchToSplashViewController()
+                self?.switchToSplashViewController()
             }
         )
     }

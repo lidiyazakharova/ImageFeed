@@ -10,8 +10,8 @@ final class ImagesListViewController: UIViewController {
     private var alertPresenter = AlertPresenter()
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .none
+        formatter.dateFormat = "dd MMMM yyyy"
+        formatter.locale = Locale(identifier: "ru_RU")
         return formatter
     }()
     private var photos: [Photo] = []
@@ -39,9 +39,9 @@ final class ImagesListViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showSingleImageSegueIdentifier {
-            let viewController = segue.destination as! SingleImageViewController
-            let indexPath = sender as! IndexPath
-            viewController.photo = imagesListService.photos[indexPath.row]
+            let viewController = segue.destination as? SingleImageViewController
+            guard let indexPath = sender as? IndexPath else { return }
+            viewController?.photo = imagesListService.photos[indexPath.row]
         } else {
             super.prepare(for: segue, sender: sender)
         }
@@ -67,7 +67,7 @@ final class ImagesListViewController: UIViewController {
 extension ImagesListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return ImagesListService.shared.photos.count
+        return imagesListService.photos.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -89,22 +89,24 @@ extension ImagesListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row + 1 == imagesListService.photos.count || imagesListService.photos.count == 0 {
-            imagesListService.fetchPhotosNextPage() { result in }
+            DispatchQueue.global().async { [weak self] in
+                self?.imagesListService.fetchPhotosNextPage() { result in }
+            }
         }
     }
 }
 
 extension ImagesListViewController {
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        guard indexPath.row < ImagesListService.shared.photos.count else { return }
-        let photo = ImagesListService.shared.photos[indexPath.row]
+        guard indexPath.row < imagesListService.photos.count else { return }
+        let photo = imagesListService.photos[indexPath.row]
         let imageUrl = URL(string: photo.thumbImageURL)
         cell.cellImage.kf.indicatorType = .activity
         cell.cellImage.kf.setImage(
             with: imageUrl,
             placeholder: UIImage(named: "stub_card"),
-            completionHandler: { result in
-                self.tableView.reloadRows(at: [indexPath], with: .automatic)
+            completionHandler: { [weak self] result in
+                self?.tableView.reloadRows(at: [indexPath], with: .automatic)
             }
         )
         cell.dateLabel.text = dateFormatter.string(from: photo.createdAt!)
@@ -122,10 +124,17 @@ extension ImagesListViewController: ImagesListCellDelegate {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         let photo = photos[indexPath.row]
         UIBlockingProgressHUD.show()
-        imagesListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { result in
+        imagesListService.changeLike(photoId: photo.id,
+                                     isLike: !photo.isLiked) { result in
             switch result {
             case .success:
-                let newPhoto = Photo(id: photo.id, size: photo.size, createdAt: photo.createdAt, welcomeDescription: photo.welcomeDescription, thumbImageURL: photo.thumbImageURL, largeImageURL: photo.largeImageURL, isLiked: !photo.isLiked)
+                let newPhoto = Photo(id: photo.id,
+                                     size: photo.size,
+                                     createdAt: photo.createdAt,
+                                     welcomeDescription: photo.welcomeDescription,
+                                     thumbImageURL: photo.thumbImageURL,
+                                     largeImageURL: photo.largeImageURL,
+                                     isLiked: !photo.isLiked)
                 self.imagesListService.photos[indexPath.row] = newPhoto
                 self.photos = self.imagesListService.photos
                 cell.setIsLiked(self.photos[indexPath.row].isLiked)

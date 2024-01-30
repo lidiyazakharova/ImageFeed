@@ -4,8 +4,8 @@ final class ImagesListService {
     
     static let shared = ImagesListService()
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
-    private let builder: URLRequestBuilder
     var photos: [Photo] = []
+    private let builder: URLRequestBuilder
     private var lastLoadedPage: Int?
     private var nextPage: Int = 0
     private var currentTask: URLSessionTask?
@@ -17,11 +17,8 @@ final class ImagesListService {
     }
     
     func fetchPhotosNextPage(completion: @escaping (Result<[Photo], Error>) -> Void) {
-        guard currentTask == nil else { return }
-        
-        nextPage = lastLoadedPage == nil ? 1 : lastLoadedPage! + 1
-        
-        assert(Thread.isMainThread)
+        guard currentTask == nil else { return }        
+        nextPage = (lastLoadedPage ?? 0) + 1
         
         guard let request = makePhotosRequest() else {
             assertionFailure("Invalid request")
@@ -59,7 +56,7 @@ final class ImagesListService {
             return nil
         }
         return builder.makeHTTPRequest(
-            path: "/photos?page=\(self.nextPage)&per_page=1\(perPage)",
+            path: "/photos?page=\(self.nextPage)&per_page=\(perPage)",
             httpMethod: "GET",
             baseURL: url
         )
