@@ -51,17 +51,6 @@ final class ImagesListService {
         }
     }
     
-    private func makePhotosRequest () -> URLRequest? {
-        guard let url = URL(string: Constants.defaultBaseURL) else {
-            return nil
-        }
-        return builder.makeHTTPRequest(
-            path: "/photos?page=\(self.nextPage)&per_page=\(perPage)",
-            httpMethod: "GET",
-            baseURL: url
-        )
-    }
-    
     func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
         
         var request: URLRequest?
@@ -97,6 +86,17 @@ final class ImagesListService {
         
     }
     
+    private func makePhotosRequest () -> URLRequest? {
+        guard let url = URL(string: Constants.defaultBaseURL) else {
+            return nil
+        }
+        return builder.makeHTTPRequest(
+            path: "/photos?page=\(self.nextPage)&per_page=\(perPage)",
+            httpMethod: "GET",
+            baseURL: url
+        )
+    }
+        
     private func makeLikeRequest(photoId: String) -> URLRequest? {
         guard let url = URL(string: Constants.defaultBaseURL) else {
             return nil
