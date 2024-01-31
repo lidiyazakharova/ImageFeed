@@ -90,6 +90,13 @@ final class ImagesListService {
         }
     }
     
+    func reset() {
+        photos = []
+        nextPage = 0
+        lastLoadedPage = nil
+        
+    }
+    
     private func makeLikeRequest(photoId: String) -> URLRequest? {
         guard let url = URL(string: Constants.defaultBaseURL) else {
             return nil
