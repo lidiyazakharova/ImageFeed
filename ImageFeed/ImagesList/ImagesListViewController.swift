@@ -125,7 +125,9 @@ extension ImagesListViewController: ImagesListCellDelegate {
         let photo = photos[indexPath.row]
         UIBlockingProgressHUD.show()
         imagesListService.changeLike(photoId: photo.id,
-                                     isLike: !photo.isLiked) { result in
+                                     isLike: !photo.isLiked) { [weak self] result in
+            guard let self = self else { return }
+            
             switch result {
             case .success:
                 let newPhoto = Photo(id: photo.id,
