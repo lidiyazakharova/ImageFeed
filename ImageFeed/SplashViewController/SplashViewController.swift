@@ -19,7 +19,7 @@ final class SplashViewController: UIViewController {
         splashScreenImage.widthAnchor.constraint(equalToConstant: 75).isActive = true
         return splashScreenImage
     } ()
-    
+        
     //MARK: - UIViewController
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return.lightContent
@@ -63,7 +63,6 @@ final class SplashViewController: UIViewController {
             fetchProfile { [weak self] in
                 UIBlockingProgressHUD.dismiss()
                 self?.switchToTabBarController()
-                
             }
         } else {
             showAuthController()
@@ -71,7 +70,7 @@ final class SplashViewController: UIViewController {
         
     }
     
-    private func showAuthController() {
+   private func showAuthController() {
         let viewController = UIStoryboard(name: "Main", bundle: .main).instantiateViewController(identifier: "AuthViewControllerID")
         guard let authViewController = viewController as? AuthViewController else { return }
         authViewController.delegate = self
@@ -139,13 +138,10 @@ extension SplashViewController: AuthViewControllerDelegate {
     }
     
     private func showLoginAlert(error: Error) {
-        print("We are here")
-        
         alertPresenter.showAlert(title: "Что-то пошло не так :(",
                                  message: "Не удалось войти в систему, \(error.localizedDescription)") { [weak self] in
             guard let self = self else { return }
             self.showAuthController()
-            
         }
     }
     

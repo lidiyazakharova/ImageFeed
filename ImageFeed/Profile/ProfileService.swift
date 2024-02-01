@@ -34,7 +34,7 @@ final class ProfileService {
         }
     }
     
-    func makeFetchProfileRequest () -> URLRequest? {
+  private func makeFetchProfileRequest () -> URLRequest? {
         guard let url = URL(string: Constants.defaultBaseURL) else {
             return nil
         }

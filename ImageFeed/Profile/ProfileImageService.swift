@@ -40,7 +40,7 @@ final class ProfileImageService {
         task.resume()
     }
     
-    func makeImageRequest (userName: String) -> URLRequest? {
+   private func makeImageRequest (userName: String) -> URLRequest? {
         guard let url = URL(string: Constants.defaultBaseURL) else {
             return nil
         }

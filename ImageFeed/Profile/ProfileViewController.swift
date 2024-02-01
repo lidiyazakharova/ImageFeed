@@ -1,12 +1,15 @@
 import UIKit
 import Kingfisher
+import WebKit
 
 final class ProfileViewController: UIViewController {
     
     //MARK: - Private Properties
     private let profileImageService = ProfileImageService.shared
     private let profileService = ProfileService.shared
+    private let imagesListService = ImagesListService.shared
     private var profileImageServiceObserver: NSObjectProtocol?
+    private let alertPresenter = AlertPresenter()
     
     private lazy var avatarImage: UIImageView = {
         let avatarImage = UIImageView()
@@ -59,6 +62,7 @@ final class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        alertPresenter.delegate = self
         view.backgroundColor = .ypBlack
         setImage()
         setText()
@@ -141,11 +145,29 @@ final class ProfileViewController: UIViewController {
     
     @objc
     private func didTapButton() {
-        print("logout")
-        OAuth2TokenStorage.shared.token = nil
+        alertPresenter.showConfirmLogoutAlert(
+            yesHandler: { [weak self] in
+                OAuth2TokenStorage.shared.token = nil
+                HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+                WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+                    records.forEach { record in
+                        WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
+                    }
+                }
+                self?.imagesListService.reset()
+                self?.switchToSplashViewController()
+            }
+        )
+    }
+    
+    private func switchToSplashViewController() {
+        guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
+        let splashViewController = SplashViewController()
+        window.rootViewController = splashViewController
     }
 }
 
+//MARK: - Extension
 extension Notification {
     static let userInfoImageURLKey: String = "URL"
     var userInfoImageURL: String? {
