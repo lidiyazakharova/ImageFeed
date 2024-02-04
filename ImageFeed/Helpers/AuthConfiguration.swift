@@ -9,7 +9,7 @@ let AccessScope = "public+read_user+write_likes"
 //MARK: Unsplash api base paths
 let DefaultBaseURL = URL(string:"https://api.unsplash.com")!
 let BaseURL = URL(string: "https://unsplash.com")!
-let UnsplashAuthorizeURL = URL(string: "https://unsplash.com/oauth/authorize")!
+let UnsplashAuthorizeURL = "https://unsplash.com/oauth/authorize"
 let BaseAuthTokenPath = "/oauth/token"
 let AuthorizedPath = "/oauth/authorize/native"
 
@@ -23,7 +23,7 @@ struct AuthConfiguration {
     let redirectURI: String
     let accessScope: String
     let defaultBaseURL: URL
-    let authURL: URL
+    let authURL: String
     let baseURL: URL
     let baseAuthTokenPath: String
     let authorizedPath: String
@@ -43,7 +43,7 @@ struct AuthConfiguration {
             )
         }
     
-    init(accessKey: String, secretKey: String, redirectURI: String, accessScope: String, defaultBaseURL: URL, authURL: URL, baseURL: URL, baseAuthTokenPath: String, authorizedPath: String, bearerToken: String) {
+    init(accessKey: String, secretKey: String, redirectURI: String, accessScope: String, defaultBaseURL: URL, authURL: String, baseURL: URL, baseAuthTokenPath: String, authorizedPath: String, bearerToken: String) {
         self.accessKey = accessKey
         self.secretKey = secretKey
         self.redirectURI = redirectURI

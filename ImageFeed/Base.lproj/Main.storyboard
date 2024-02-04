@@ -212,7 +212,7 @@
         <!--Web View View Controller-->
         <scene sceneID="fcT-u5-P0c">
             <objects>
-                <viewController id="suX-NK-L3q" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WebViewViewController" id="suX-NK-L3q" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="wzF-gD-nmE">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -244,6 +244,7 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="HzA-uV-C1V"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <accessibility key="accessibilityConfiguration" identifier="UnsplashWebView"/>
                         <constraints>
                             <constraint firstItem="ftI-AH-RsG" firstAttribute="leading" secondItem="HzA-uV-C1V" secondAttribute="leading" constant="8" id="18W-b1-fpD"/>
                             <constraint firstItem="uK8-S6-b9y" firstAttribute="bottom" secondItem="wzF-gD-nmE" secondAttribute="bottom" id="4NN-Oj-xeN"/>
@@ -279,6 +280,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ADc-Da-hnn" userLabel="authActionButton">
                                 <rect key="frame" x="16" y="724" width="382" height="48"/>
                                 <color key="backgroundColor" name="YP White"/>
+                                <accessibility key="accessibilityConfiguration" identifier="Authenticate"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="343" id="h1E-FS-VJb"/>
                                     <constraint firstAttribute="height" constant="48" id="mnh-Lz-iOm"/>
