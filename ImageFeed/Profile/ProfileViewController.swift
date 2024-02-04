@@ -1,14 +1,22 @@
 import UIKit
 import Kingfisher
-import WebKit
+//import WebKit
 
-final class ProfileViewController: UIViewController {
+public protocol ProfileViewControllerProtocol: AnyObject {
+//    var presenter: ProfileViewPresenterProtocol? { get set }
+    func updateAvatar(url: URL)
+    func updateProfileInfo(name: String, bio: String?, loginName: String)
+}
+
+final class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
+    
+    var presenter: ProfileViewPresenterProtocol?
     
     //MARK: - Private Properties
-    private let profileImageService = ProfileImageService.shared
-    private let profileService = ProfileService.shared
-    private let imagesListService = ImagesListService.shared
-    private var profileImageServiceObserver: NSObjectProtocol?
+//    private let profileImageService = ProfileImageService.shared
+//    private let profileService = ProfileService.shared
+//    private let imagesListService = ImagesListService.shared
+//    private var profileImageServiceObserver: NSObjectProtocol?
     private let alertPresenter = AlertPresenter()
     
     private lazy var avatarImage: UIImageView = {
@@ -55,6 +63,7 @@ final class ProfileViewController: UIViewController {
         createLabel(size: 13, weight: .regular, text: "Description", color: .ypWhite)
     }()
     
+    
     //MARK: - UIViewController
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return.lightContent
@@ -62,45 +71,41 @@ final class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        presenter?.viewDidLoad()
+        
         alertPresenter.delegate = self
         view.backgroundColor = .ypBlack
         setImage()
         setText()
         setButton()
-        
-        profileImageServiceObserver = NotificationCenter.default.addObserver(
-            forName: ProfileImageService.didChangeNotification,
-            object: nil,
-            queue: .main
-        ) { [weak self] _ in
-            guard let self = self else { return }
-            self.updateAvatar()
-        }
-        updateAvatar()
+//        
+//        profileImageServiceObserver = NotificationCenter.default.addObserver(
+//            forName: ProfileImageService.didChangeNotification,
+//            object: nil,
+//            queue: .main
+//        ) { [weak self] _ in
+//            guard let self = self else { return }
+//            self.updateAvatar()
+//        }
+//        updateAvatar()
     }
     
-    private func updateAvatar() {
-        guard let profileImageURL = ProfileImageService.shared.avatarURL
-        else { return }
-        
+    func updateAvatar(url: URL) {
         let processor = RoundCornerImageProcessor(cornerRadius: 50)
         avatarImage.kf.indicatorType = .activity
-        avatarImage.kf.setImage(with: profileImageURL, options: [.processor(processor)])
+        avatarImage.kf.setImage(with: url, options: [.processor(processor)])
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        guard let profile = ProfileService.shared.profile else {
-            assertionFailure("No saved profile")
-            return
-        }
         
-        nameLabel.text = profile.name
-        descriptionLabel.text = profile.bio
-        loginNameLabel.text = profile.loginName
-        
-        profileImageService.fetchProfileImageURL(userName: profile.username) { _ in
-        }
+        presenter?.viewWillAppear()
+    }
+    
+    func updateProfileInfo(name: String, bio: String?, loginName: String) {
+        nameLabel.text = name
+        descriptionLabel.text = bio
+        loginNameLabel.text = loginName
     }
     
     //MARK: - Private Functions
@@ -147,15 +152,15 @@ final class ProfileViewController: UIViewController {
     private func didTapButton() {
         alertPresenter.showConfirmLogoutAlert(
             yesHandler: { [weak self] in
-                OAuth2TokenStorage.shared.token = nil
-                HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
-                WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
-                    records.forEach { record in
-                        WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
-                    }
-                }
-                self?.imagesListService.reset()
+             self?.presenter?.removeData()
                 self?.switchToSplashViewController()
+//                OAuth2TokenStorage.shared.token = nil
+//                HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+//                WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+//                    records.forEach { record in
+//                        WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
+                    
+//                self?.imagesListService.reset()
             }
         )
     }
@@ -168,9 +173,9 @@ final class ProfileViewController: UIViewController {
 }
 
 //MARK: - Extension
-extension Notification {
-    static let userInfoImageURLKey: String = "URL"
-    var userInfoImageURL: String? {
-        userInfo?[Notification.userInfoImageURLKey] as? String
-    }
-}
+//extension Notification {
+//    static let userInfoImageURLKey: String = "URL"
+//    var userInfoImageURL: String? {
+//        userInfo?[Notification.userInfoImageURLKey] as? String
+//    }
+//}

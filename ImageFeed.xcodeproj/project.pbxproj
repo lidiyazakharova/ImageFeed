@@ -16,6 +16,8 @@
 		5943F2502B6FA57C004D80FF /* WebViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5943F24F2B6FA57C004D80FF /* WebViewTests.swift */; };
 		5943F25D2B6FAD1C004D80FF /* ImageFeedUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5943F25C2B6FAD1C004D80FF /* ImageFeedUITests.swift */; };
 		5943F25F2B6FAD1C004D80FF /* ImageFeedUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5943F25E2B6FAD1C004D80FF /* ImageFeedUITestsLaunchTests.swift */; };
+		5943F2662B700CF6004D80FF /* ProfileViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5943F2652B700CF6004D80FF /* ProfileViewPresenter.swift */; };
+		5943F2682B702195004D80FF /* ImageListViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5943F2672B702195004D80FF /* ImageListViewPresenter.swift */; };
 		595B36F62B3A007E007AD0A5 /* OAuth2TokenResponseBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595B36F52B3A007E007AD0A5 /* OAuth2TokenResponseBody.swift */; };
 		595FFBFD2B4DF08C000E1CB7 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595FFBFC2B4DF08C000E1CB7 /* TabBarController.swift */; };
 		595FFC082B5C1319000E1CB7 /* ImagesListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595FFC072B5C1319000E1CB7 /* ImagesListService.swift */; };
@@ -83,6 +85,8 @@
 		5943F25A2B6FAD1C004D80FF /* ImageFeedUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageFeedUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5943F25C2B6FAD1C004D80FF /* ImageFeedUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFeedUITests.swift; sourceTree = "<group>"; };
 		5943F25E2B6FAD1C004D80FF /* ImageFeedUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFeedUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		5943F2652B700CF6004D80FF /* ProfileViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewPresenter.swift; sourceTree = "<group>"; };
+		5943F2672B702195004D80FF /* ImageListViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageListViewPresenter.swift; sourceTree = "<group>"; };
 		595B36F52B3A007E007AD0A5 /* OAuth2TokenResponseBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2TokenResponseBody.swift; sourceTree = "<group>"; };
 		595FFBFC2B4DF08C000E1CB7 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		595FFC072B5C1319000E1CB7 /* ImagesListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListService.swift; sourceTree = "<group>"; };
@@ -168,6 +172,7 @@
 				597460FA2B49DBCD000D8A4A /* ProfileService.swift */,
 				597460FC2B49DC12000D8A4A /* ProfileStructures.swift */,
 				597461012B4C3B7C000D8A4A /* ProfileImageService.swift */,
+				5943F2652B700CF6004D80FF /* ProfileViewPresenter.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -284,6 +289,7 @@
 				59CF2F8F2B0E7B1E00C639FD /* ImagesListCell.swift */,
 				595FFC072B5C1319000E1CB7 /* ImagesListService.swift */,
 				595FFC092B5C13C0000E1CB7 /* PhotoStructures.swift */,
+				5943F2672B702195004D80FF /* ImageListViewPresenter.swift */,
 			);
 			path = ImagesList;
 			sourceTree = "<group>";
@@ -494,6 +500,7 @@
 				595FFC0A2B5C13C0000E1CB7 /* PhotoStructures.swift in Sources */,
 				595FFC082B5C1319000E1CB7 /* ImagesListService.swift in Sources */,
 				59CF2F5D2B0024CE00C639FD /* ImagesListViewController.swift in Sources */,
+				5943F2662B700CF6004D80FF /* ProfileViewPresenter.swift in Sources */,
 				597460F92B49B0DC000D8A4A /* URLRequestBuilder.swift in Sources */,
 				591867F82B36103700D08725 /* WebViewViewController.swift in Sources */,
 				595B36F62B3A007E007AD0A5 /* OAuth2TokenResponseBody.swift in Sources */,
@@ -501,6 +508,7 @@
 				59CF2F592B0024CE00C639FD /* AppDelegate.swift in Sources */,
 				59CF2F902B0E7B1E00C639FD /* ImagesListCell.swift in Sources */,
 				597460FD2B49DC12000D8A4A /* ProfileStructures.swift in Sources */,
+				5943F2682B702195004D80FF /* ImageListViewPresenter.swift in Sources */,
 				59AA187A2B1540A30085E35E /* GradientView.swift in Sources */,
 				5943F23B2B6F8F61004D80FF /* AuthHelperProtocol.swift in Sources */,
 				595FFBFD2B4DF08C000E1CB7 /* TabBarController.swift in Sources */,
