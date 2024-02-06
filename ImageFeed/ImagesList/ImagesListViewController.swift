@@ -140,6 +140,13 @@ extension ImagesListViewController {
         cell.gradient.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
         let likeImage = photo.isLiked ? UIImage(named: "likeActive") : UIImage(named: "likeNoActive")
         cell.likeButton.setImage(likeImage, for: .normal)
+        
+        if(photo.isLiked) {
+            cell.likeButton.accessibilityIdentifier = "like button on"
+        } else {
+            cell.likeButton.accessibilityIdentifier = "like button off"
+        }
+        
         cell.delegate = self
     }
 }

@@ -148,6 +148,7 @@
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YcE-Mk-xfP" userLabel="Bacward Button">
                                 <rect key="frame" x="8" y="52" width="48" height="48"/>
+                                <accessibility key="accessibilityConfiguration" identifier="nav back button white"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="Exo-LB-2qu"/>
                                     <constraint firstAttribute="width" constant="48" id="INX-4W-TOb"/>

@@ -26,7 +26,10 @@ final class AlertPresenter {
         let yesAction = UIAlertAction(title: "Да", style: .default) { _ in
             yesHandler()
         }
+        yesAction.accessibilityIdentifier = "Yes"
+        
         let noAction = UIAlertAction(title: "Нет", style: .default) { _ in }
+        
         alert.addAction(yesAction)
         alert.addAction(noAction)
         delegate?.present(alert, animated: true)

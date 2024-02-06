@@ -14,8 +14,6 @@ final class ImageListViewPresenter: ImageListViewPresenterProtocol {
     private let imagesListService = ImagesListService.shared
     private var photos: [Photo] = []
     
-    var photo: Photo? = nil
-    
     func viewDidLoad() {
         imageListServiceObserver = NotificationCenter.default.addObserver(
             forName: ImagesListService.didChangeNotification,
@@ -25,8 +23,8 @@ final class ImageListViewPresenter: ImageListViewPresenterProtocol {
             guard let self = self else { return }
             self.changeCount()
         }
-        
-        imagesListService.fetchPhotosNextPage{result in}
+        self.fetchPhotosNextPage()
+//        imagesListService.fetchPhotosNextPage{result in}
         
 //        photo = imagesListService.photos[indexPath.row]
     }
@@ -70,12 +68,12 @@ final class ImageListViewPresenter: ImageListViewPresenterProtocol {
         imagesListService.fetchPhotosNextPage{result in}
     }
     
-    private func changeCount() {
+    func changeCount() {
         let oldCount = photos.count
         let newCount = imagesListService.photos.count
         
         photos = imagesListService.photos
         
-        self.view?.updateTableViewAnimated(oldCount: oldCount, newCount: newCount)
+        view?.updateTableViewAnimated(oldCount: oldCount, newCount: newCount)
     }
 }

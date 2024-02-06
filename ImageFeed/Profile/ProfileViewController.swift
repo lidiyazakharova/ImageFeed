@@ -48,15 +48,21 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         logoutButton.widthAnchor.constraint(equalToConstant: 44).isActive = true
         logoutButton.tintColor = .ypRed
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        logoutButton.accessibilityIdentifier = "logout button"
         return logoutButton
     }()
     
-    private lazy var nameLabel: UILabel = {
-        createLabel(size: 23, weight: .bold, text: "Name", color: .ypWhite)
+    lazy var nameLabel: UILabel = {
+        let label = createLabel(size: 23, weight: .bold, text: "Name", color: .ypWhite)
+        label.accessibilityIdentifier = "textName"
+        return label
     }()
     
-    private lazy var loginNameLabel: UILabel = {
-        createLabel(size: 13, weight: .regular, text: "login", color: .ypGray)
+    lazy var loginNameLabel: UILabel = {
+        let label = createLabel(size: 13, weight: .regular, text: "login", color: .ypGray)
+        label.accessibilityIdentifier = "textLogin"
+        return label
     }()
     
     private lazy var descriptionLabel: UILabel = {
@@ -152,7 +158,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
     private func didTapButton() {
         alertPresenter.showConfirmLogoutAlert(
             yesHandler: { [weak self] in
-             self?.presenter?.removeData()
+                self?.presenter?.removeData()
                 self?.switchToSplashViewController()
 //                OAuth2TokenStorage.shared.token = nil
 //                HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
