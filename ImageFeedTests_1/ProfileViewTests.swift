@@ -12,10 +12,7 @@ final class ProfileViewPresenterSpy: ProfileViewPresenterProtocol {
     func viewDidLoad() {
         viewDidLoadCalled = true
     }
-
-    func removeData() {
-    }
-    
+    func removeData() {}
     func viewWillAppear() {
         viewWillAppearCalled = true
     }
@@ -29,7 +26,6 @@ final class ProfileViewControllerSpy: ProfileViewControllerProtocol {
         updateAvatarCalled = true
     }
     func updateProfileInfo(name: String, bio: String?, loginName: String) {}
-    
 }
 
 class ProfileViewTests: XCTestCase {
@@ -44,7 +40,7 @@ class ProfileViewTests: XCTestCase {
         _ = viewController.view
         
         //then
-        XCTAssertTrue(presenter.viewDidLoadCalled) //behaviour verification
+        XCTAssertTrue(presenter.viewDidLoadCalled)
     }
     
     func testViewControllerCallsViewWillAppear() {
@@ -57,7 +53,7 @@ class ProfileViewTests: XCTestCase {
         viewController.viewWillAppear(false)
         
         //then
-        XCTAssertTrue(presenter.viewWillAppearCalled) //behaviour verification
+        XCTAssertTrue(presenter.viewWillAppearCalled)
     }
     
     func testPresenterCallsUpdateAvatar() {
@@ -70,8 +66,8 @@ class ProfileViewTests: XCTestCase {
         presenter.viewWillAppear()
         
         //then
-        XCTAssertTrue(viewController.updateAvatarCalled) //behaviour verification
-    }
+        XCTAssertTrue(viewController.updateAvatarCalled)
+    } //НЕ РАБОТАЕТ
     
     func testProfileInfoUpdate() {
         //given

@@ -2,8 +2,7 @@ import Foundation
 import WebKit
 
 public protocol ProfileViewPresenterProtocol {
-//    var view: ProfileViewControllerProtocol? { get set }
-    
+
     func viewDidLoad()
     func removeData()
     func viewWillAppear()

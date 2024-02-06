@@ -19,7 +19,7 @@ final class SplashViewController: UIViewController {
         splashScreenImage.widthAnchor.constraint(equalToConstant: 75).isActive = true
         return splashScreenImage
     } ()
-        
+    
     //MARK: - UIViewController
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return.lightContent
@@ -70,7 +70,7 @@ final class SplashViewController: UIViewController {
         
     }
     
-   private func showAuthController() {
+    private func showAuthController() {
         let viewController = UIStoryboard(name: "Main", bundle: .main).instantiateViewController(identifier: "AuthViewControllerID")
         guard let authViewController = viewController as? AuthViewController else { return }
         authViewController.delegate = self

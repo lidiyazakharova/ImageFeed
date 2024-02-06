@@ -18,9 +18,7 @@ class AuthHelper: AuthHelperProtocol {
     }
 
     func authURL() -> URL {
-//        var urlComponents = URLComponents(url: configuration.authURL, resolvingAgainstBaseURL: false)!
         var urlComponents = URLComponents(string: configuration.authURL)!
-//        var urlComponents = URLComponents(string: configuration.authURLString)!
         urlComponents.queryItems = [
             URLQueryItem(name: "client_id", value: configuration.accessKey),
             URLQueryItem(name: "redirect_uri", value: configuration.redirectURI),

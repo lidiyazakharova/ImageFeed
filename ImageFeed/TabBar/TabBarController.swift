@@ -4,10 +4,9 @@ final class TabBarController: UITabBarController {
     override func awakeFromNib() {
         super.awakeFromNib()
         let storyboard = UIStoryboard(name: "Main", bundle: .main)
-//        let imageListViewController = storyboard.instantiateViewController(withIdentifier: "ImageListViewController")
-        
         let imageListViewController = storyboard
             .instantiateViewController(withIdentifier: "ImageListViewController") as! ImagesListViewController
+        
         let imageListViewPresenter = ImageListViewPresenter()
         imageListViewController.presenter = imageListViewPresenter
         imageListViewPresenter.view = imageListViewController

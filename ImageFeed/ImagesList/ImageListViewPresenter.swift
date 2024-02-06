@@ -24,9 +24,6 @@ final class ImageListViewPresenter: ImageListViewPresenterProtocol {
             self.changeCount()
         }
         self.fetchPhotosNextPage()
-//        imagesListService.fetchPhotosNextPage{result in}
-        
-//        photo = imagesListService.photos[indexPath.row]
     }
     
     func getPhotos() -> [Photo] {
@@ -71,9 +68,7 @@ final class ImageListViewPresenter: ImageListViewPresenterProtocol {
     func changeCount() {
         let oldCount = photos.count
         let newCount = imagesListService.photos.count
-        
         photos = imagesListService.photos
-        
         view?.updateTableViewAnimated(oldCount: oldCount, newCount: newCount)
     }
 }

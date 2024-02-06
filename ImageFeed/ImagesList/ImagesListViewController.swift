@@ -14,9 +14,7 @@ final class ImagesListViewController: UIViewController & ImageListViewController
     
     //MARK: - Private Properties
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
-//    private let imagesListService = ImagesListService.shared
     @IBOutlet private var tableView: UITableView!
-//    private var imageListServiceObserver: NSObjectProtocol?
     private var alertPresenter = AlertPresenter()
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -24,8 +22,6 @@ final class ImagesListViewController: UIViewController & ImageListViewController
         formatter.locale = Locale(identifier: "ru_RU")
         return formatter
     }()
-//    private var photos: [Photo] = []
-    
     
     //MARK: - UIViewController
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -37,15 +33,6 @@ final class ImagesListViewController: UIViewController & ImageListViewController
         alertPresenter.delegate = self
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         presenter?.viewDidLoad()
-//        imagesListService.fetchPhotosNextPage{result in}
-//        imageListServiceObserver = NotificationCenter.default.addObserver(
-//            forName: ImagesListService.didChangeNotification,
-//            object: nil,
-//            queue: .main
-//        ) { [weak self] _ in
-//            guard let self = self else { return }
-//            self.updateTableViewAnimated()
-//        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -60,11 +47,6 @@ final class ImagesListViewController: UIViewController & ImageListViewController
     
     //MARK: - Private Functions
     func updateTableViewAnimated(oldCount: Int, newCount: Int) {
-//        let oldCount = photos.count
-//        let newCount = imagesListService.photos.count
-//        photos = imagesListService.photos
-//        let oldCount = presenter.oldCount
-//        let newCount = presenter.newCount
         if oldCount != newCount {
             tableView.performBatchUpdates {
                 let indexPaths = (oldCount..<newCount).map { i in
@@ -112,9 +94,7 @@ extension ImagesListViewController: UITableViewDelegate {
         let photosCount = presenter?.getPhotos().count ?? 0
         
         if indexPath.row + 1 == photosCount || photosCount == 0 {
-//        if indexPath.row + 1 == imagesListService.photos.count || imagesListService.photos.count == 0 {
             DispatchQueue.global().async { [weak self] in
-//                self?.imagesListService.fetchPhotosNextPage() { result in }
                 self?.presenter?.fetchPhotosNextPage()
             }
         }
@@ -155,33 +135,7 @@ extension ImagesListViewController: ImagesListCellDelegate {
     
     func imageListCellDidTapLike(_ cell: ImagesListCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
-//        guard let photo = presenter?.getPhotos()[indexPath.row] else { return }
-//        
         presenter?.changePhotoLike(photoIndex: indexPath)
-        
-//        UIBlockingProgressHUD.show()
-//        imagesListService.changeLike(photoId: photo.id,
-//                                     isLike: !photo.isLiked) { [weak self] result in
-//            guard let self = self else { return }
-//            
-//            switch result {
-//            case .success:
-//                let newPhoto = Photo(id: photo.id,
-//                                     size: photo.size,
-//                                     createdAt: photo.createdAt,
-//                                     welcomeDescription: photo.welcomeDescription,
-//                                     thumbImageURL: photo.thumbImageURL,
-//                                     largeImageURL: photo.largeImageURL,
-//                                     isLiked: !photo.isLiked)
-//                self.imagesListService.photos[indexPath.row] = newPhoto
-//                self.photos = self.imagesListService.photos
-//                cell.setIsLiked(self.photos[indexPath.row].isLiked)
-//                UIBlockingProgressHUD.dismiss()
-//            case .failure(let error):
-//                UIBlockingProgressHUD.dismiss()
-//                self.showLikeAlert(error: error)
-//            }
-//        }
     }
     
     func updateCellLikeStatus(cellIndex: IndexPath, isLiked: Bool) {

@@ -1,9 +1,7 @@
 import UIKit
 import Kingfisher
-//import WebKit
 
 public protocol ProfileViewControllerProtocol: AnyObject {
-//    var presenter: ProfileViewPresenterProtocol? { get set }
     func updateAvatar(url: URL)
     func updateProfileInfo(name: String, bio: String?, loginName: String)
 }
@@ -13,10 +11,6 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
     var presenter: ProfileViewPresenterProtocol?
     
     //MARK: - Private Properties
-//    private let profileImageService = ProfileImageService.shared
-//    private let profileService = ProfileService.shared
-//    private let imagesListService = ImagesListService.shared
-//    private var profileImageServiceObserver: NSObjectProtocol?
     private let alertPresenter = AlertPresenter()
     
     private lazy var avatarImage: UIImageView = {
@@ -84,16 +78,6 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         setImage()
         setText()
         setButton()
-//        
-//        profileImageServiceObserver = NotificationCenter.default.addObserver(
-//            forName: ProfileImageService.didChangeNotification,
-//            object: nil,
-//            queue: .main
-//        ) { [weak self] _ in
-//            guard let self = self else { return }
-//            self.updateAvatar()
-//        }
-//        updateAvatar()
     }
     
     func updateAvatar(url: URL) {
@@ -160,13 +144,6 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
             yesHandler: { [weak self] in
                 self?.presenter?.removeData()
                 self?.switchToSplashViewController()
-//                OAuth2TokenStorage.shared.token = nil
-//                HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
-//                WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
-//                    records.forEach { record in
-//                        WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
-                    
-//                self?.imagesListService.reset()
             }
         )
     }
@@ -177,11 +154,3 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         window.rootViewController = splashViewController
     }
 }
-
-//MARK: - Extension
-//extension Notification {
-//    static let userInfoImageURLKey: String = "URL"
-//    var userInfoImageURL: String? {
-//        userInfo?[Notification.userInfoImageURLKey] as? String
-//    }
-//}
