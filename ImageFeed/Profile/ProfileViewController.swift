@@ -1,14 +1,16 @@
 import UIKit
 import Kingfisher
-import WebKit
 
-final class ProfileViewController: UIViewController {
+public protocol ProfileViewControllerProtocol: AnyObject {
+    func updateAvatar(url: URL)
+    func updateProfileInfo(name: String, bio: String?, loginName: String)
+}
+
+final class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
+    
+    var presenter: ProfileViewPresenterProtocol?
     
     //MARK: - Private Properties
-    private let profileImageService = ProfileImageService.shared
-    private let profileService = ProfileService.shared
-    private let imagesListService = ImagesListService.shared
-    private var profileImageServiceObserver: NSObjectProtocol?
     private let alertPresenter = AlertPresenter()
     
     private lazy var avatarImage: UIImageView = {
@@ -40,20 +42,27 @@ final class ProfileViewController: UIViewController {
         logoutButton.widthAnchor.constraint(equalToConstant: 44).isActive = true
         logoutButton.tintColor = .ypRed
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        logoutButton.accessibilityIdentifier = "logout button"
         return logoutButton
     }()
     
-    private lazy var nameLabel: UILabel = {
-        createLabel(size: 23, weight: .bold, text: "Name", color: .ypWhite)
+    lazy var nameLabel: UILabel = {
+        let label = createLabel(size: 23, weight: .bold, text: "Name", color: .ypWhite)
+        label.accessibilityIdentifier = "textName"
+        return label
     }()
     
-    private lazy var loginNameLabel: UILabel = {
-        createLabel(size: 13, weight: .regular, text: "login", color: .ypGray)
+    lazy var loginNameLabel: UILabel = {
+        let label = createLabel(size: 13, weight: .regular, text: "login", color: .ypGray)
+        label.accessibilityIdentifier = "textLogin"
+        return label
     }()
     
     private lazy var descriptionLabel: UILabel = {
         createLabel(size: 13, weight: .regular, text: "Description", color: .ypWhite)
     }()
+    
     
     //MARK: - UIViewController
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -62,45 +71,31 @@ final class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        presenter?.viewDidLoad()
+        
         alertPresenter.delegate = self
         view.backgroundColor = .ypBlack
         setImage()
         setText()
         setButton()
-        
-        profileImageServiceObserver = NotificationCenter.default.addObserver(
-            forName: ProfileImageService.didChangeNotification,
-            object: nil,
-            queue: .main
-        ) { [weak self] _ in
-            guard let self = self else { return }
-            self.updateAvatar()
-        }
-        updateAvatar()
     }
     
-    private func updateAvatar() {
-        guard let profileImageURL = ProfileImageService.shared.avatarURL
-        else { return }
-        
+    func updateAvatar(url: URL) {
         let processor = RoundCornerImageProcessor(cornerRadius: 50)
         avatarImage.kf.indicatorType = .activity
-        avatarImage.kf.setImage(with: profileImageURL, options: [.processor(processor)])
+        avatarImage.kf.setImage(with: url, options: [.processor(processor)])
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        guard let profile = ProfileService.shared.profile else {
-            assertionFailure("No saved profile")
-            return
-        }
         
-        nameLabel.text = profile.name
-        descriptionLabel.text = profile.bio
-        loginNameLabel.text = profile.loginName
-        
-        profileImageService.fetchProfileImageURL(userName: profile.username) { _ in
-        }
+        presenter?.viewWillAppear()
+    }
+    
+    func updateProfileInfo(name: String, bio: String?, loginName: String) {
+        nameLabel.text = name
+        descriptionLabel.text = bio
+        loginNameLabel.text = loginName
     }
     
     //MARK: - Private Functions
@@ -147,14 +142,7 @@ final class ProfileViewController: UIViewController {
     private func didTapButton() {
         alertPresenter.showConfirmLogoutAlert(
             yesHandler: { [weak self] in
-                OAuth2TokenStorage.shared.token = nil
-                HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
-                WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
-                    records.forEach { record in
-                        WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
-                    }
-                }
-                self?.imagesListService.reset()
+                self?.presenter?.removeData()
                 self?.switchToSplashViewController()
             }
         )
@@ -164,13 +152,5 @@ final class ProfileViewController: UIViewController {
         guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
         let splashViewController = SplashViewController()
         window.rootViewController = splashViewController
-    }
-}
-
-//MARK: - Extension
-extension Notification {
-    static let userInfoImageURLKey: String = "URL"
-    var userInfoImageURL: String? {
-        userInfo?[Notification.userInfoImageURLKey] as? String
     }
 }

@@ -27,7 +27,7 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        progressView.progress = 0.0
+        webView.accessibilityIdentifier = "UnsplashWebView"
         webView.navigationDelegate = self
         presenter?.viewDidLoad()
         
@@ -79,40 +79,4 @@ extension WebViewViewController: WKNavigationDelegate {
         return nil
     }
     
-    
 }
-
-
-//Добавьте уведомление презентера о том, что WebView обновил значение estimatedProgress. В методе observeValue(forKeyPath:of:change:context:) вьюконтроллера замените вызов updateProgress() на presenter?.didUpdateProgressValue(webView.estimatedProgress):
-//override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-//    if keyPath == #keyPath(WKWebView.estimatedProgress) {
-//        presenter?.didUpdateProgressValue(webView.estimatedProgress)
-//    } else {
-//        super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-//    }
-//}
-
-
-//override func viewDidAppear(_ animated: Bool) {
-//    super.viewDidAppear(animated)
-//    // NOTE: Since the class is marked as `final` we don't need to pass a context.
-//    // In case of inhertiance context must not be nil.
-//    webView.addObserver(
-//        self,
-//        forKeyPath: #keyPath(WKWebView.estimatedProgress),
-//        options: .new,
-//        context: nil)
-//}
-//
-//override func viewWillDisappear(_ animated: Bool) {
-//    super.viewWillDisappear(animated)
-//    webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), context: nil)
-//}
-//
-//override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-//    if keyPath == #keyPath(WKWebView.estimatedProgress) {
-//        presenter?.didUpdateProgressValue(webView.estimatedProgress)
-//    } else {
-//        super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-//    }
-//}
