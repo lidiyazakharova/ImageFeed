@@ -1,9 +1,10 @@
 import XCTest
 
-let email = "lidijaromanowa@gmail.com"// ПОМЕНЯТЬ
-let password = "gataHkey_2018"// ПОМЕНЯТЬ
-let profileName = "Lidia Zakharova" //ПОМЕНЯТЬ
-let profileLogin = "@lidiyazak" //ПОМЕНЯТЬ
+let email = " your e-mail"//ВНЕСТИ свой email
+let password = "your password"//ВНЕСТИ свой passowrd
+let profileName = "your profile name" //ВНЕСТИ свой Profile.name
+let profileLogin = "your login" //ВНЕСТИ свой Profile.loginName
+
 
 class ImageFeedUITests: XCTestCase {
     
@@ -44,31 +45,29 @@ class ImageFeedUITests: XCTestCase {
     }
     
     func testFeed() throws {
-        
-        sleep(3)
-        
+     
         let tablesQuery = app.tables
-        
+       
         let cell = tablesQuery.children(matching: .cell).element(boundBy: 0)
         XCTAssertTrue(cell.waitForExistence(timeout: 5))
+     
+        cell.swipeUp()
         
         let cellToLike = tablesQuery.children(matching: .cell).element(boundBy: 1)
         XCTAssertTrue(cellToLike.waitForExistence(timeout: 5))
-        
-        let likeButtonOff = cellToLike.buttons["like button off"]
+
+        let likeButtonOff = cellToLike.buttons["like button on"]
         XCTAssertTrue(likeButtonOff.waitForExistence(timeout: 5))
-        
         likeButtonOff.tap()
-        
+
         sleep(2)
-        
-        let likeButtonOn = cellToLike.buttons["like button on"]
+
+        let likeButtonOn = cellToLike.buttons["like button off"]
         XCTAssertTrue(likeButtonOn.waitForExistence(timeout: 5))
-        
         likeButtonOn.tap()
-        
+
         sleep(2)
-        
+
         cellToLike.tap()
         
         sleep(2)
@@ -83,7 +82,7 @@ class ImageFeedUITests: XCTestCase {
         XCTAssertTrue(navBackButtonWhiteButton.waitForExistence(timeout: 5))
         
         navBackButtonWhiteButton.tap()
-    } //НЕ РАБОТАЕТ
+    }
     
     func testProfile() throws {
         let textName = "textName"

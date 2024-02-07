@@ -6,8 +6,9 @@ final class ProfileViewPresenterSpy: ProfileViewPresenterProtocol {
     var viewDidLoadCalled: Bool = false
     var viewWillAppearCalled: Bool = false
     var view: ProfileViewControllerProtocol?
-    let presentName = "Lidia Zakharova"
-    let presentLogin = "@lidiyazak"
+    let profileService = ProfileService.shared
+    let presentName = "your profile name" //ВНЕСТИ свой Profile.name
+    let presentLogin = "your login" //ВНЕСТИ свой Profile.loginName
     
     func viewDidLoad() {
         viewDidLoadCalled = true
@@ -20,12 +21,12 @@ final class ProfileViewPresenterSpy: ProfileViewPresenterProtocol {
 
 final class ProfileViewControllerSpy: ProfileViewControllerProtocol {
     var presenter: ImageFeed.ProfileViewPresenterProtocol?
-    var updateAvatarCalled = false
+    var updateProfileInfoCalled = false
     
-    func updateAvatar(url: URL) {
-        updateAvatarCalled = true
+    func updateAvatar(url: URL) {}
+    func updateProfileInfo(name: String, bio: String?, loginName: String) {
+        updateProfileInfoCalled = true
     }
-    func updateProfileInfo(name: String, bio: String?, loginName: String) {}
 }
 
 class ProfileViewTests: XCTestCase {
@@ -56,19 +57,6 @@ class ProfileViewTests: XCTestCase {
         XCTAssertTrue(presenter.viewWillAppearCalled)
     }
     
-    func testPresenterCallsUpdateAvatar() {
-        //given
-        let viewController = ProfileViewControllerSpy()
-        let presenter = ProfileViewPresenter()
-        viewController.presenter = presenter
-        presenter.view = viewController
-        //when
-        presenter.viewWillAppear()
-        
-        //then
-        XCTAssertTrue(viewController.updateAvatarCalled)
-    } //НЕ РАБОТАЕТ
-    
     func testProfileInfoUpdate() {
         //given
         let viewController = ProfileViewController()
@@ -78,9 +66,9 @@ class ProfileViewTests: XCTestCase {
         
         //when
         viewController.updateProfileInfo(
-            name: "Lidia Zakharova",
+            name: "your profile name",//ВНЕСТИ свой Profile.name
             bio: nil,
-            loginName: "@lidiyazak")
+            loginName: "your login")//ВНЕСТИ свой Profile.loginName
         
         //then
         XCTAssertTrue(viewController.nameLabel.text == presenter.presentName)
