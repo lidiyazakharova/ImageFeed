@@ -1,9 +1,9 @@
 import XCTest
 
-let email = " your e-mail"//ВНЕСТИ свой email
+let email = "your email"//ВНЕСТИ свой email
 let password = "your password"//ВНЕСТИ свой passowrd
-let profileName = "your profile name" //ВНЕСТИ свой Profile.name
-let profileLogin = "your login" //ВНЕСТИ свой Profile.loginName
+let profileName = "your name" //ВНЕСТИ свой Profile.name
+let profileLogin = "your loginName"//ВНЕСТИ свой Profile.loginName
 
 
 class ImageFeedUITests: XCTestCase {
@@ -26,6 +26,10 @@ class ImageFeedUITests: XCTestCase {
         
         loginTextField.tap()
         loginTextField.typeText(email)
+        
+        app.toolbars.buttons["Done"].tap()
+        sleep(1)
+        
         webView.swipeUp()
         
         let passwordTextField = webView.descendants(matching: .secureTextField).element
@@ -33,7 +37,10 @@ class ImageFeedUITests: XCTestCase {
         
         passwordTextField.tap()
         passwordTextField.typeText(password)
-        sleep(2)
+        
+        app.toolbars.buttons["Done"].tap()
+        sleep(1)
+        
         webView.swipeUp()
         
         webView.buttons["Login"].tap()
@@ -45,42 +52,30 @@ class ImageFeedUITests: XCTestCase {
     }
     
     func testFeed() throws {
-     
         let tablesQuery = app.tables
-       
-        let cell = tablesQuery.children(matching: .cell).element(boundBy: 0)
+        
+        let cell = tablesQuery.cells.element(boundBy: 0)
         XCTAssertTrue(cell.waitForExistence(timeout: 5))
-     
-        cell.swipeUp()
-        
-        let cellToLike = tablesQuery.children(matching: .cell).element(boundBy: 1)
-        XCTAssertTrue(cellToLike.waitForExistence(timeout: 5))
 
-        let likeButtonOff = cellToLike.buttons["like button on"]
-        XCTAssertTrue(likeButtonOff.waitForExistence(timeout: 5))
-        likeButtonOff.tap()
+        cell.buttons["like button off"].tap()
+        XCTAssertTrue(cell.buttons["like button on"].waitForExistence(timeout: 5))
+        
+        cell.buttons["like button on"].tap()
+        XCTAssertTrue(cell.buttons["like button off"].waitForExistence(timeout: 5))
+
+        cell.tap()
 
         sleep(2)
 
-        let likeButtonOn = cellToLike.buttons["like button off"]
-        XCTAssertTrue(likeButtonOn.waitForExistence(timeout: 5))
-        likeButtonOn.tap()
-
-        sleep(2)
-
-        cellToLike.tap()
-        
-        sleep(2)
-        
         let image = app.scrollViews.images.element(boundBy: 0)
         XCTAssertTrue(image.waitForExistence(timeout: 5))
-        
+
         image.pinch(withScale: 3, velocity: 1)
         image.pinch(withScale: 0.5, velocity: -1)
-        
+
         let navBackButtonWhiteButton = app.buttons["nav back button white"]
         XCTAssertTrue(navBackButtonWhiteButton.waitForExistence(timeout: 5))
-        
+
         navBackButtonWhiteButton.tap()
     }
     

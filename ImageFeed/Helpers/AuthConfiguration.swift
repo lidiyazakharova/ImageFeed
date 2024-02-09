@@ -42,18 +42,4 @@ struct AuthConfiguration {
                                      bearerToken: BearerToken
             )
         }
-    
-    init(accessKey: String, secretKey: String, redirectURI: String, accessScope: String, defaultBaseURL: URL, authURL: String, baseURL: URL, baseAuthTokenPath: String, authorizedPath: String, bearerToken: String) {
-        self.accessKey = accessKey
-        self.secretKey = secretKey
-        self.redirectURI = redirectURI
-        self.accessScope = accessScope
-        self.defaultBaseURL = defaultBaseURL
-        self.authURL = authURL
-        self.baseURL = baseURL
-        self.baseAuthTokenPath = baseAuthTokenPath
-        self.authorizedPath = authorizedPath
-        self.bearerToken = bearerToken
-        
-    }
 }
