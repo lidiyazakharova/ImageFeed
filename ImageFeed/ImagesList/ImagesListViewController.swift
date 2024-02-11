@@ -95,9 +95,6 @@ extension ImagesListViewController: UITableViewDelegate {
         
         if indexPath.row + 1 == photosCount || photosCount == 0 {
             presenter?.fetchPhotosNextPage()
-//            DispatchQueue.global().async { [weak self] in
-//                self?.presenter?.fetchPhotosNextPage()
-//            }
         }
     }
 }
