@@ -2,12 +2,15 @@ import UIKit
 
 final class ProfileService {
     static let shared = ProfileService()
+    let configuration: AuthConfiguration
     private (set) var profile: Profile?
     private var currentTask: URLSessionTask?
     private let builder: URLRequestBuilder
     
-    private init(builder: URLRequestBuilder = .shared){
+    private init(builder: URLRequestBuilder = .shared,
+                 configuration: AuthConfiguration = .standard){
         self.builder = builder
+        self.configuration = configuration
     }
     
     func fetchProfile(completion: @escaping (Result<Profile, Error>) -> Void) {
@@ -35,7 +38,7 @@ final class ProfileService {
     }
     
   private func makeFetchProfileRequest () -> URLRequest? {
-        guard let url = URL(string: Constants.defaultBaseURL) else {
+      guard let url = URL(string: configuration.defaultBaseURL.absoluteString) else {
             return nil
         }
         

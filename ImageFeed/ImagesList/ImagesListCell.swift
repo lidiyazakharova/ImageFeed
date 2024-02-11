@@ -31,6 +31,12 @@ extension ImagesListCell {
             : UIImage(named: "likeNoActive"),
             for: .normal
         )
+        
+        if(state) {
+            likeButton.accessibilityIdentifier = "like button on"
+        } else {
+            likeButton.accessibilityIdentifier = "like button off"
+        }
     }
     
     @objc func likeButtonClicked() {

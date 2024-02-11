@@ -2,14 +2,17 @@ import Foundation
 
 final class ProfileImageService {
     static let shared = ProfileImageService()
+    let configuration: AuthConfiguration
     static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
     
     private var currentTask: URLSessionTask?
     private (set) var avatarURL: URL?
     private let builder: URLRequestBuilder
     
-    private init(builder: URLRequestBuilder = .shared){
+    private init(builder: URLRequestBuilder = .shared,
+                 configuration: AuthConfiguration = .standard){
         self.builder = builder
+        self.configuration = configuration
     }
     
     func fetchProfileImageURL(userName: String, completion: @escaping (Result<String, Error>) -> Void) {
@@ -41,7 +44,7 @@ final class ProfileImageService {
     }
     
    private func makeImageRequest (userName: String) -> URLRequest? {
-        guard let url = URL(string: Constants.defaultBaseURL) else {
+       guard let url = URL(string: configuration.defaultBaseURL.absoluteString) else {
             return nil
         }
         return builder.makeHTTPRequest(

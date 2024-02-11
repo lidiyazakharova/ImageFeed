@@ -1,7 +1,7 @@
 import Foundation
 
 final class OAuth2Service {
-    
+    let configuration: AuthConfiguration
     var isAuthenticated: Bool { storage.token != nil }
     private let urlSession: URLSession
     private let storage: OAuth2TokenStorage
@@ -13,11 +13,13 @@ final class OAuth2Service {
     init(
         urlSession: URLSession = .shared,
         storage: OAuth2TokenStorage = .shared,
-        builder: URLRequestBuilder = .shared
+        builder: URLRequestBuilder = .shared,
+        configuration: AuthConfiguration = .standard
     ) {
         self.urlSession = urlSession
         self.storage = storage
         self.builder = builder
+        self.configuration = configuration
     }
 
     
@@ -52,14 +54,14 @@ final class OAuth2Service {
 
 extension OAuth2Service {
     private func authTokenRequest(code: String) -> URLRequest? {
-        guard let url = URL(string: Constants.baseURL) else {
+        guard let url = URL(string: configuration.baseURL.absoluteString) else {
             return nil
         }
         return builder.makeHTTPRequest(
-            path: "\(Constants.baseAuthTokenPath)"
-            + "?client_id=\(Constants.accessKey)"
-            + "&&client_secret=\(Constants.secretKey)"
-            + "&&redirect_uri=\(Constants.redirectURI)"
+            path: "\(configuration.baseAuthTokenPath)"
+            + "?client_id=\(configuration.accessKey)"
+            + "&&client_secret=\(configuration.secretKey)"
+            + "&&redirect_uri=\(configuration.redirectURI)"
             + "&&code=\(code)"
             + "&&grant_type=authorization_code",
             httpMethod: "POST",

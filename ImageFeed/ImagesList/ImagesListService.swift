@@ -4,6 +4,7 @@ final class ImagesListService {
     
     static let shared = ImagesListService()
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
+    let configuration: AuthConfiguration
     var photos: [Photo] = []
     private let builder: URLRequestBuilder
     private var lastLoadedPage: Int?
@@ -12,8 +13,10 @@ final class ImagesListService {
     private var changeLikeTask: URLSessionTask?
     private let perPage = 10
     
-    private init(builder: URLRequestBuilder = .shared){
+    private init(builder: URLRequestBuilder = .shared,
+                 configuration: AuthConfiguration = .standard){
         self.builder = builder
+        self.configuration = configuration
     }
     
     func fetchPhotosNextPage(completion: @escaping (Result<[Photo], Error>) -> Void) {
@@ -87,7 +90,7 @@ final class ImagesListService {
     }
     
     private func makePhotosRequest () -> URLRequest? {
-        guard let url = URL(string: Constants.defaultBaseURL) else {
+        guard let url = URL(string: configuration.defaultBaseURL.absoluteString) else {
             return nil
         }
         return builder.makeHTTPRequest(
@@ -98,7 +101,7 @@ final class ImagesListService {
     }
         
     private func makeLikeRequest(photoId: String) -> URLRequest? {
-        guard let url = URL(string: Constants.defaultBaseURL) else {
+        guard let url = URL(string: configuration.defaultBaseURL.absoluteString) else {
             return nil
         }
         return builder.makeHTTPRequest(
@@ -109,7 +112,7 @@ final class ImagesListService {
     }
     
     private func makeDeleteLikeRequest(photoId: String) -> URLRequest? {
-        guard let url = URL(string: Constants.defaultBaseURL) else {
+        guard let url = URL(string: configuration.defaultBaseURL.absoluteString) else {
             return nil
         }
         return builder.makeHTTPRequest(
